@@ -728,6 +728,31 @@ def write_rss(path, feed, cal_name, site_url, now):
         f.write(xml)
 
 
+def run_summary(feed: list, changes: dict, warnings: list, count: int = 10) -> str:
+    """Markdown for the GitHub Actions run page, so anyone can check a run without opening the feed."""
+    upcoming = [e for e in feed if e["status"] == "upcoming"]
+    md = [
+        "## Events feed",
+        f"{len(feed)} events ({len(upcoming)} upcoming, {len(feed) - len(upcoming)} past). "
+        f"{sum(1 for e in upcoming if e['image'])} upcoming have an image, "
+        f"{sum(1 for e in upcoming if e['registration_url'])} have a Register link.",
+        f"Changes since last run: {len(changes['added'])} added, {len(changes['updated'])} updated, "
+        f"{len(changes['removed'])} removed.",
+        "",
+        f"### Next {min(count, len(upcoming))} events",
+        "| When | Event | Where | Image | Register |",
+        "|---|---|---|---|---|",
+    ]
+    for e in upcoming[:count]:
+        when = datetime.fromisoformat(e["start_local"]).strftime("%a %b %-d, %-I:%M %p")
+        title = e["title"].replace("|", "/")
+        where = (e["location"] or "").replace("|", "/")
+        md.append(f"| {when} | {title} | {where} | {'yes' if e['image'] else ''} | {'yes' if e['registration_url'] else ''} |")
+    if warnings:
+        md += ["", "### Warnings"] + [f"- {w}" for w in warnings]
+    return "\n".join(md) + "\n"
+
+
 # ── CLI ───────────────────────────────────────────────────────────────────
 
 def main():
@@ -828,6 +853,12 @@ def main():
     write_rss(out("events.rss.xml"), feed, args.calendar_name, args.site_url, now)
     with open(out("changes.json"), "w") as f:
         json.dump({"generated_at": meta["generated_at"], **changes, "warnings": warnings}, f, indent=2)
+
+    if os.environ.get("GITHUB_STEP_SUMMARY"):
+        summary = run_summary(feed, changes, warnings)
+        with open(os.environ["GITHUB_STEP_SUMMARY"], "a") as f:
+            f.write(summary)  # shows on the run page
+        print(summary, file=sys.stderr)  # and in the log
 
     upcoming = sum(1 for e in feed if e["status"] == "upcoming")
     with_reg = sum(1 for e in feed if e["registration_url"])
