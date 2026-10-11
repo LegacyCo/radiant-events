@@ -15,7 +15,7 @@
   if (!document.querySelector('style[data-cc-style="' + name + '"]')) {
     var style = document.createElement("style");
     style.setAttribute("data-cc-style", name);
-    style.textContent = "  .cc-events {\n    /* BRAND: change these to match the site */\n    --cc-accent: #474D47;          /* button + active tab color */\n    --cc-accent-text: #FCF2BF;\n    --cc-muted: rgba(71, 77, 71, .8);\n    --cc-border: rgba(190, 173, 147, .7);\n    --cc-card-bg: transparent;\n    --cc-radius: 0px;          /* card corners */\n    --cc-btn-radius: 300px;       /* button corners */\n    font-family: inherit;\n    color: inherit;\n    max-width: 1100px;\n    margin: 0 auto;\n  }\n  .cc-events__tabs { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }\n  .cc-events__tab {\n    font: inherit; font-size: .9rem; letter-spacing: .04em; text-transform: uppercase;\n    padding: 10px 18px; border: 1px solid var(--cc-border); border-radius: 999px;\n    background: transparent; color: inherit; cursor: pointer;\n  }\n  .cc-events__tab.is-active { background: var(--cc-accent); color: var(--cc-accent-text); border-color: var(--cc-accent); }\n  .cc-events__list { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }\n  .cc-event {\n    display: flex; flex-direction: column; border: 1px solid var(--cc-border);\n    border-radius: var(--cc-radius); overflow: hidden; background: var(--cc-card-bg);\n  }\n  .cc-event__img { aspect-ratio: 16 / 9; width: 100%; object-fit: cover; display: block; background: var(--cc-border); }\n  .cc-event__body { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 8px; flex: 1; }\n  .cc-event__date { font-size: .85rem; letter-spacing: .05em; text-transform: uppercase; color: var(--cc-muted); margin: 0; }\n  .cc-event__title { font-size: 1.25rem; line-height: 1.25; margin: 0; }\n  .cc-event__meta, .cc-event__summary { margin: 0; font-size: .95rem; color: var(--cc-muted); overflow-wrap: anywhere; }\n  .cc-event__badge {\n    align-self: flex-start; font-size: .7rem; letter-spacing: .08em; text-transform: uppercase;\n    padding: 3px 8px; border-radius: 4px; background: var(--cc-accent); color: var(--cc-accent-text);\n  }\n  .cc-event__actions { margin-top: auto; padding-top: 10px; display: flex; gap: 10px; flex-wrap: wrap; }\n  .cc-event__btn {\n    display: inline-block; padding: 10px 16px; border-radius: var(--cc-btn-radius); font-size: .9rem;\n    text-decoration: none !important; border: 1px solid var(--cc-accent);\n  }\n  .cc-event__btn--primary { background: var(--cc-accent); color: var(--cc-accent-text) !important; }\n  .cc-event__btn--ghost { background: transparent; color: inherit !important; }\n  .cc-events__msg { grid-column: 1 / -1; color: var(--cc-muted); }\n  .cc-events__more {\n    display: block; margin: 28px auto 0; font: inherit; padding: 10px 22px; cursor: pointer;\n    border: 1px solid var(--cc-border); border-radius: 999px; background: transparent; color: inherit;\n  }\n  .cc-events__more[hidden], .cc-events__stale[hidden], .cc-events__tabs[hidden] { display: none; }\n  .cc-events__all {\n    display: table; margin: 28px auto 0; padding: 10px 22px; border: 1px solid var(--cc-accent);\n    border-radius: var(--cc-btn-radius); color: inherit !important; text-decoration: none !important;\n  }\n  .cc-events__stale {\n    margin: 0 0 20px; padding: 12px 16px; border: 1px solid var(--cc-border);\n    border-radius: var(--cc-radius); font-size: .9rem; color: var(--cc-muted);\n  }\n  .cc-events__stale a { color: inherit; }\n  .cc-events--past .cc-event { opacity: .85; }\n  .cc-cal { margin-top: 12px; font-size: .85rem; }\n  .cc-cal summary {\n    display: inline-block; cursor: pointer; list-style: none; color: var(--cc-muted);\n    text-decoration: underline; text-underline-offset: 3px;\n  }\n  .cc-cal summary::-webkit-details-marker { display: none; }\n  .cc-cal__links { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: 8px; }\n  .cc-cal__links a { color: inherit !important; }\n  .cc-events__subscribe { margin: 28px auto 0; text-align: center; }\n  .cc-events__subscribe .cc-cal__links { justify-content: center; }";
+    style.textContent = "  .cc-events {\n    /* BRAND: change these to match the site */\n    --cc-accent: #474D47;          /* button + active tab color */\n    --cc-accent-text: #FCF2BF;\n    --cc-muted: rgba(71, 77, 71, .8);\n    --cc-border: rgba(190, 173, 147, .7);\n    --cc-card-bg: transparent;\n    --cc-radius: 0px;          /* card corners */\n    --cc-btn-radius: 300px;       /* button corners */\n    --cc-font: aktiv-grotesk-condensed, \"Archivo Narrow\", \"Arial Narrow\", sans-serif;         /* e.g. the site's body font, with fallbacks */\n    --cc-ph-bg: rgba(190, 173, 147, .35);  /* editorial style: block for events without a photo */\n    --cc-tag-bg: #FFFFFF;          /* editorial style: date tag on the photo */\n    --cc-tag-text: #474D47;\n    font-family: var(--cc-font);\n    color: inherit;\n    max-width: 1100px;\n    margin: 0 auto;\n  }\n  .cc-events__tabs { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }\n  .cc-events__tab {\n    font: inherit; font-size: .9rem; letter-spacing: .04em; text-transform: uppercase;\n    padding: 10px 18px; border: 1px solid var(--cc-border); border-radius: 999px;\n    background: transparent; color: inherit; cursor: pointer;\n  }\n  .cc-events__tab.is-active { background: var(--cc-accent); color: var(--cc-accent-text); border-color: var(--cc-accent); }\n  .cc-events__list { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }\n  .cc-event {\n    display: flex; flex-direction: column; border: 1px solid var(--cc-border);\n    border-radius: var(--cc-radius); overflow: hidden; background: var(--cc-card-bg);\n  }\n  .cc-event__img { aspect-ratio: 16 / 9; width: 100%; object-fit: cover; display: block; background: var(--cc-border); }\n  .cc-event__body { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 8px; flex: 1; }\n  .cc-event__date { font-size: .85rem; letter-spacing: .05em; text-transform: uppercase; color: var(--cc-muted); margin: 0; }\n  .cc-event__title { font-size: 1.25rem; line-height: 1.25; margin: 0; }\n  .cc-event__meta, .cc-event__summary { margin: 0; font-size: .95rem; color: var(--cc-muted); overflow-wrap: anywhere; }\n  .cc-event__badge {\n    align-self: flex-start; font-size: .7rem; letter-spacing: .08em; text-transform: uppercase;\n    padding: 3px 8px; border-radius: 4px; background: var(--cc-accent); color: var(--cc-accent-text);\n  }\n  .cc-event__actions { margin-top: auto; padding-top: 10px; display: flex; gap: 10px; flex-wrap: wrap; }\n  .cc-event__btn {\n    display: inline-block; padding: 10px 16px; border-radius: var(--cc-btn-radius); font-size: .9rem;\n    text-decoration: none !important; border: 1px solid var(--cc-accent);\n  }\n  .cc-event__btn--primary { background: var(--cc-accent); color: var(--cc-accent-text) !important; }\n  .cc-event__btn--ghost { background: transparent; color: inherit !important; }\n  .cc-events__msg { grid-column: 1 / -1; color: var(--cc-muted); }\n  .cc-events__more {\n    display: block; margin: 28px auto 0; font: inherit; padding: 10px 22px; cursor: pointer;\n    border: 1px solid var(--cc-border); border-radius: 999px; background: transparent; color: inherit;\n  }\n  .cc-events__more[hidden], .cc-events__stale[hidden], .cc-events__tabs[hidden] { display: none; }\n\n  /* EDITORIAL style (STYLE: \"editorial\"): a blog-style grid. Photo, small date,\n     bold uppercase title, one line of text, underlined text links, no boxes. */\n  .cc-events--editorial .cc-events__list { gap: 48px 60px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }\n  .cc-events--editorial .cc-event { border: 0; border-radius: 0; background: transparent; overflow: visible; }\n  .cc-event__media { position: relative; display: block; margin-bottom: 20px; text-decoration: none !important; }\n  .cc-events--editorial .cc-event__img, .cc-event__ph {\n    display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; margin: 0; background: var(--cc-ph-bg);\n  }\n  .cc-event__tag {\n    position: absolute; top: 12px; right: 12px; min-width: 58px; padding: 8px 10px 7px; text-align: center;\n    background: var(--cc-tag-bg); color: var(--cc-tag-text); line-height: 1;\n  }\n  .cc-event__tag-month { display: block; font-size: .85rem; text-transform: uppercase; }\n  .cc-event__tag-day { display: block; font-size: 1.75rem; margin-top: 3px; }\n  .cc-events--editorial .cc-event__title a { color: inherit !important; text-decoration: none !important; }\n  .cc-events--editorial .cc-event__title a:hover { text-decoration: underline !important; text-underline-offset: 4px; }\n  .cc-events--editorial .cc-event__body { padding: 0; gap: 10px; }\n  .cc-events--editorial .cc-event__date { font-size: .95rem; letter-spacing: 0; text-transform: none; color: var(--cc-muted); margin: -4px 0 0; }\n  .cc-events--editorial .cc-event__meta { font-size: .85rem; }\n  .cc-events--editorial .cc-event__title { font-size: 1.4rem; font-weight: 700; line-height: 1.15; text-transform: uppercase; letter-spacing: 0; }\n  .cc-events--editorial .cc-event__actions { padding-top: 4px; gap: 20px; }\n  .cc-events--editorial .cc-event__btn {\n    padding: 0; border: 0; border-radius: 0; background: none !important; color: inherit !important;\n    font-size: 1rem; text-decoration: underline !important; text-underline-offset: 3px;\n  }\n  .cc-events--editorial .cc-event__btn--primary { font-weight: 700; }\n  .cc-events--editorial .cc-events__tabs { gap: 28px; margin-bottom: 32px; }\n  .cc-events--editorial .cc-events__tab {\n    border: 0; border-radius: 0; padding: 4px 0; background: none; color: var(--cc-muted); font-size: 1rem;\n  }\n  .cc-events--editorial .cc-events__tab.is-active {\n    background: none; color: inherit; font-weight: 700; text-decoration: underline; text-underline-offset: 6px;\n  }\n  .cc-events--editorial .cc-events__more, .cc-events--editorial .cc-events__all {\n    border: 0; border-radius: 0; padding: 6px 0; text-decoration: underline !important; text-underline-offset: 3px;\n  }\n  .cc-events--editorial .cc-event__badge { border-radius: 0; }\n  .cc-events__all {\n    display: table; margin: 28px auto 0; padding: 10px 22px; border: 1px solid var(--cc-accent);\n    border-radius: var(--cc-btn-radius); color: inherit !important; text-decoration: none !important;\n  }\n  .cc-events__stale {\n    margin: 0 0 20px; padding: 12px 16px; border: 1px solid var(--cc-border);\n    border-radius: var(--cc-radius); font-size: .9rem; color: var(--cc-muted);\n  }\n  .cc-events__stale a { color: inherit; }\n  .cc-events--past .cc-event { opacity: .85; }\n  .cc-cal { margin-top: 12px; font-size: .85rem; }\n  .cc-cal summary {\n    display: inline-block; cursor: pointer; list-style: none; color: var(--cc-muted);\n    text-decoration: underline; text-underline-offset: 3px;\n  }\n  .cc-cal summary::-webkit-details-marker { display: none; }\n  .cc-cal__links { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: 8px; }\n  .cc-cal__links a { color: inherit !important; }\n  .cc-events__subscribe { margin: 28px auto 0; text-align: center; }\n  .cc-events__subscribe .cc-cal__links { justify-content: center; }";
     document.head.appendChild(style);
   }
   host.className = "cc-events";
@@ -27,8 +27,9 @@
   var CONFIG = {
     FEED_URL: "https://legacyco.github.io/radiant-events/events.json",
     TIMEZONE: "America/Los_Angeles",
-    USE_CHURCH_CENTER_MODAL: true,
+    USE_CHURCH_CENTER_MODAL: false,
     COLLAPSE_RECURRING: true,
+    STYLE: "editorial",              // "editorial" = photo, date, bold title, text links (blog-grid look)
     FEATURED_ONLY: false,        // true = only events starred as Featured in Planning Center
     PAGE_SIZE: 12,
     LAYOUT: "full",              // "compact" = next few upcoming events, no tabs
@@ -63,6 +64,7 @@
   list.firstChild.textContent = T.loading;
   moreBtn.textContent = T.more;
   var state = { all: [], view: "upcoming", shown: 0 };
+  if (CONFIG.STYLE === "editorial") root.classList.add("cc-events--editorial");
   var compact = CONFIG.LAYOUT === "compact";
   if (compact) {
     root.querySelector(".cc-events__tabs").hidden = true;
@@ -142,22 +144,73 @@
     else { a.target = "_blank"; a.rel = "noopener"; }
     return a;
   }
-  function card(e, view) {
-    var c = el("article", "cc-event");
+  // Editorial style: Squarespace's own event card. Photo (or a colour block) with a
+  // date tag in the corner, bold title, then the full date. Photo and title open the event.
+  function editorialTop(e, view) {
+    var media = el("a", "cc-event__media");
+    var target = (view === "upcoming" && e.registration_url) || e.details_url || e.registration_url;
+    if (target) {
+      media.href = target;
+      if (CONFIG.USE_CHURCH_CENTER_MODAL) media.setAttribute("data-open-in-church-center-modal", "true");
+      else { media.target = "_blank"; media.rel = "noopener"; }
+    }
+    media.setAttribute("aria-hidden", "true");
+    media.tabIndex = -1;
+    var block = el("div", "cc-event__ph");
     if (e.image) {
       var img = el("img", "cc-event__img");
       img.src = e.image; img.alt = ""; img.loading = "lazy";
-      img.onerror = function () { img.remove(); };
-      c.appendChild(img);
+      img.onerror = function () { img.replaceWith(block); };
+      media.appendChild(img);
+    } else {
+      media.appendChild(block);
     }
+    var tag = el("div", "cc-event__tag");
+    tag.appendChild(el("span", "cc-event__tag-month", fmt(e.start, { month: "short" }).replace(".", "")));
+    tag.appendChild(el("span", "cc-event__tag-day", fmt(e.start, { day: "numeric" })));
+    media.appendChild(tag);
+    return { media: media, target: target };
+  }
+  function editorialDate(e) {
+    var day = fmt(e.start, { month: "long", day: "numeric", year: "numeric" });
+    return e.all_day ? day : day + " · " + fmt(e.start, { hour: "numeric", minute: "2-digit" });
+  }
+  function card(e, view) {
+    var c = el("article", "cc-event");
+    var editorial = CONFIG.STYLE === "editorial";
     var b = el("div", "cc-event__body");
-    if (e.featured && view === "upcoming") b.appendChild(el("span", "cc-event__badge", T.featured));
-    b.appendChild(el("p", "cc-event__date", dateLine(e)));
-    b.appendChild(el("h3", "cc-event__title", e.title));
-    var meta = [e.location, CONFIG.COLLAPSE_RECURRING ? e.recurrence : ""].filter(Boolean).join(" · ");
-    if (meta) b.appendChild(el("p", "cc-event__meta", meta));
-    var blurb = e.summary || (e.description || "").split("\n")[0];
-    if (blurb) b.appendChild(el("p", "cc-event__summary", blurb.length > 220 ? blurb.slice(0, 217) + "…" : blurb));
+    if (editorial) {
+      var top = editorialTop(e, view);
+      c.appendChild(top.media);
+      var h = el("h3", "cc-event__title");
+      if (top.target) {
+        var a = el("a", "", e.title);
+        a.href = top.target;
+        if (CONFIG.USE_CHURCH_CENTER_MODAL) a.setAttribute("data-open-in-church-center-modal", "true");
+        else { a.target = "_blank"; a.rel = "noopener"; }
+        h.appendChild(a);
+      } else {
+        h.textContent = e.title;
+      }
+      b.appendChild(h);
+      b.appendChild(el("p", "cc-event__date", editorialDate(e)));
+      var where = [e.location, CONFIG.COLLAPSE_RECURRING ? e.recurrence : ""].filter(Boolean).join(" · ");
+      if (where) b.appendChild(el("p", "cc-event__meta", where));
+    } else {
+      if (e.image) {
+        var img = el("img", "cc-event__img");
+        img.src = e.image; img.alt = ""; img.loading = "lazy";
+        img.onerror = function () { img.remove(); };
+        c.appendChild(img);
+      }
+      if (e.featured && view === "upcoming") b.appendChild(el("span", "cc-event__badge", T.featured));
+      b.appendChild(el("p", "cc-event__date", dateLine(e)));
+      b.appendChild(el("h3", "cc-event__title", e.title));
+      var meta = [e.location, CONFIG.COLLAPSE_RECURRING ? e.recurrence : ""].filter(Boolean).join(" · ");
+      if (meta) b.appendChild(el("p", "cc-event__meta", meta));
+      var blurb = e.summary || (e.description || "").split("\n")[0];
+      if (blurb) b.appendChild(el("p", "cc-event__summary", blurb.length > 220 ? blurb.slice(0, 217) + "…" : blurb));
+    }
 
     var actions = el("div", "cc-event__actions");
     var modal = CONFIG.USE_CHURCH_CENTER_MODAL;
@@ -165,7 +218,7 @@
       actions.appendChild(link(e.registration_url, T.register, "cc-event__btn--primary", modal));
     }
     var registerOnly = view === "upcoming" && e.registration_url && !CONFIG.SHOW_DETAILS_WITH_REGISTER;
-    if (e.details_url && !registerOnly) {
+    if (e.details_url && !registerOnly && !editorial) {
       var primary = !actions.childNodes.length && view === "upcoming";
       actions.appendChild(link(e.details_url, T.details,
         primary ? "cc-event__btn--primary" : "cc-event__btn--ghost", modal));
