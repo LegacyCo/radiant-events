@@ -32,7 +32,7 @@
     STYLE: "editorial",              // "editorial" = photo, date, bold title, text links (blog-grid look)
     FEATURED_ONLY: false,        // true = only events starred as Featured in Planning Center
     PAGE_SIZE: 12,
-    LAYOUT: "slider",              // "compact" = next few upcoming events, no tabs; "carousel" = row with arrows
+    LAYOUT: "compact",              // "compact" = next few upcoming events, no tabs; "carousel" = row with arrows
     COMPACT_COUNT: 3,
     CAROUSEL_COUNT: 9,           // carousel layout: how many upcoming events to scroll through
     CAROUSEL_HEADING: "",        // carousel layout: heading beside the arrows, e.g. "Upcoming events"
