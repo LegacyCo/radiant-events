@@ -53,6 +53,9 @@ jobs:
           PCO_TIMEZONE: America/Los_Angeles
           PCO_CALENDAR_NAME: Radiant Church Events
           SITE_URL: https://radiantcentralcoast.com/events
+          # Street addresses only for the church campus. Homes show their name; Church
+          # Center still has the full address for people who register or click through.
+          STREET_ADDRESSES: campus
           # Backstop: staff items seen on Radiant's Google Calendar. Never shown, even if published.
           EXCLUDE_TITLES: |
             Worship Practice

@@ -18,7 +18,8 @@ Squarespace Code Block can render.
 Output:
 
   events.json      feed for squarespace-events-embed.html
-  events.ics       iCal feed (Google Calendar, Apple Calendar, Outlook)
+  events.ics       iCal feed people can subscribe to (Google, Apple, Outlook)
+  ics/<id>.ics     one file per upcoming event, for "Add to calendar" buttons
   events.rss.xml   RSS 2.0 feed (Zapier / Make "new item" triggers)
   changes.json     what was added / updated / removed since the previous run,
                    plus warnings about Register links that look missing
@@ -38,6 +39,7 @@ import hashlib
 import html
 import json
 import os
+import shutil
 import re
 import sys
 import time
@@ -374,17 +376,23 @@ def fetch_church_center_events(client: PCOClient, since: datetime, until: dateti
     return items, locations
 
 
-def format_location(loc: dict) -> str:
+def format_location(loc: dict, street: str = "all") -> str:
+    """street="campus" keeps street addresses for church campuses only. Homes and
+    other places show their name ("The Broere House"); Church Center still has the
+    full address for anyone who registers or clicks through."""
     if not loc or loc.get("display_on_church_center") is False:
         return ""
     name = (loc.get("name") or "").strip()
     address = ", ".join(line.strip() for line in (loc.get("full_formatted_address") or "").splitlines() if line.strip())
+    if street == "campus" and loc.get("type") != "Campus":
+        return name
     if name and address and not address.startswith(name):
         return f"{name} - {address}"
     return address or name
 
 
-def build_feed_from_church_center(items: list, locations: dict, regs: list, tz: ZoneInfo, now: datetime) -> list:
+def build_feed_from_church_center(items: list, locations: dict, regs: list, tz: ZoneInfo, now: datetime,
+                                  street: str = "all") -> list:
     feed = []
     for item in items:
         a = item.get("attributes") or {}
@@ -410,7 +418,7 @@ def build_feed_from_church_center(items: list, locations: dict, regs: list, tz: 
             "start_local": start.astimezone(tz).isoformat(),
             "end_local": end.astimezone(tz).isoformat(),
             "all_day": bool(a.get("all_day_event")),
-            "location": format_location(locations.get(loc_id)),
+            "location": format_location(locations.get(loc_id), street),
             "recurrence": (a.get("recurrence_description") or "") if a.get("recurring") else "",
             "image": a.get("image_url") or (reg or {}).get("image") or "",
             "featured": bool(a.get("featured")),
@@ -697,6 +705,26 @@ def write_ics(path, feed, cal_name, now):
         f.write("\r\n".join(ics_fold(l) for l in lines) + "\r\n")
 
 
+def ics_filename(event_id: str) -> str:
+    return re.sub(r"[^A-Za-z0-9_-]", "_", str(event_id)) + ".ics"
+
+
+def write_event_ics_files(out_dir: str, feed: list, cal_name: str, now: datetime) -> None:
+    """One .ics per upcoming event, so an "Add to calendar" button can hand Apple
+    Calendar and Outlook a real file (iPhones won't open one built in the page).
+    Each event's "ics" field is that file's path, relative to events.json."""
+    ics_dir = os.path.join(out_dir, "ics")
+    shutil.rmtree(ics_dir, ignore_errors=True)  # past and deleted events drop off
+    os.makedirs(ics_dir)
+    for e in feed:
+        if e["status"] != "upcoming":
+            e["ics"] = ""
+            continue
+        name = ics_filename(e["id"])
+        write_ics(os.path.join(ics_dir, name), [e], cal_name, now)
+        e["ics"] = f"ics/{name}"
+
+
 def write_rss(path, feed, cal_name, site_url, now):
     items = []
     for e in feed:
@@ -779,6 +807,9 @@ def main():
     p.add_argument("--exclude-title", action="append", default=[], metavar="TEXT",
                    help="Drop events whose title contains TEXT (any case). Repeatable. "
                         "Also reads EXCLUDE_TITLES, one per line")
+    p.add_argument("--street-addresses", choices=("all", "campus"), default=os.environ.get("STREET_ADDRESSES") or "all",
+                   help="campus = show street addresses only for church campuses; homes and other places show "
+                        "their name only (churchcenter source). Default all")
     p.add_argument("--min-events", type=int, default=1,
                    help="Refuse to publish a feed with fewer events than this (default 1), so a "
                         "broken source never blanks the website")
@@ -814,7 +845,7 @@ def main():
         regs = [] if args.skip_registrations else fetch_public_registrations(sub)
         print(f"   {len(items)} event dates, {len(regs)} registrations", file=sys.stderr)
         raw = {"events": items, "locations": locations}
-        feed = build_feed_from_church_center(items, locations, regs, tz, now)
+        feed = build_feed_from_church_center(items, locations, regs, tz, now, street=args.street_addresses)
         feed = add_registration_only_events(feed, regs, tz, now, since, until)
     else:
         if not args.ics_url:
@@ -848,6 +879,7 @@ def main():
               "ics": "Calendar feed + Church Center"}[args.source]
     meta = {"generated_at": iso_z(now), "source": source, "timezone": args.timezone,
             "window": {"since": iso_z(since), "until": iso_z(until)}}
+    write_event_ics_files(args.output_dir, feed, args.calendar_name, now)
     write_json(out("events.json"), feed, meta)
     write_ics(out("events.ics"), feed, args.calendar_name, now)
     write_rss(out("events.rss.xml"), feed, args.calendar_name, args.site_url, now)
