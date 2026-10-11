@@ -1,6 +1,11 @@
 // Renders the live preview page and reports what the embeds show. Text only, no screenshots.
 import { chromium } from "playwright";
 const url = process.argv[2] || "https://legacyco.github.io/radiant-events/preview.html";
+for (const name of ["home-slider", "home-coming-up", "events-page"]) {
+  const r = await fetch(`https://legacyco.github.io/radiant-events/embeds/${name}.js?t=${Date.now()}`);
+  const body = await r.text();
+  console.log(`${name}.js: ${r.status} ${(body.match(/LAYOUT: "[a-z]+"/) || ["?"])[0]} cache-control=${r.headers.get("cache-control")} last-modified=${r.headers.get("last-modified")} age=${r.headers.get("age")}`);
+}
 const browser = await chromium.launch();
 const ctx = await browser.newContext({ viewport: { width: 1280, height: 1000 } });
 const page = await ctx.newPage();
