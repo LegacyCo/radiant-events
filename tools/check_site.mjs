@@ -1,20 +1,30 @@
-// One-off: does Church Center allow framing with ?open-in-church-center-modal=true?
-const base = "https://radiantcentralcoast.churchcenter.com";
-const paths = ["/registrations/events/3919181", "/calendar/event/200190659", "/registrations", "/calendar", "/giving", "/groups", "/home", "/"];
-const params = ["", "?open-in-church-center-modal=true", "?embed=true"];
-const headerSets = {
-  plain: {},
-  "iframe from radiantcentralcoast.com": {
-    "Sec-Fetch-Dest": "iframe", "Sec-Fetch-Mode": "navigate", "Sec-Fetch-Site": "cross-site",
-    Referer: "https://radiantcentralcoast.com/events",
-    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0 Safari/537.36",
-  },
-};
-for (const [label, headers] of Object.entries(headerSets)) {
-  console.log(`\n##### ${label}`);
-  for (const p of paths) for (const q of params) {
-    const r = await fetch(base + p + q, { headers, redirect: "manual" });
-    const csp = (r.headers.get("content-security-policy") || "").match(/frame-ancestors[^;]*/);
-    console.log(`${String(r.status).padEnd(4)} xfo=${(r.headers.get("x-frame-options") || "-").padEnd(10)} csp=${csp ? csp[0] : "-"}  ${p}${q}${r.headers.get("location") ? "  -> " + r.headers.get("location") : ""}`);
-  }
-}
+// Renders the live preview page and reports what the embeds show. Text only, no screenshots.
+import { chromium } from "playwright";
+const url = process.argv[2] || "https://legacyco.github.io/radiant-events/preview.html";
+const browser = await chromium.launch();
+const ctx = await browser.newContext({ viewport: { width: 1280, height: 1000 } });
+const page = await ctx.newPage();
+const errors = [];
+page.on("pageerror", (e) => errors.push(e.message));
+await page.goto(url, { waitUntil: "networkidle" });
+await page.waitForSelector(".cc-event__line", { timeout: 30000 });
+const facts = await page.evaluate(() => ({
+  embeds: document.querySelectorAll(".cc-events[data-cc-ready]").length,
+  cards: document.querySelectorAll(".cc-event, .cc-carousel__item").length,
+  pillLines: document.querySelectorAll(".cc-event__line").length,
+  detailsPills: document.querySelectorAll(".cc-pill--solid").length,
+  calendarPills: document.querySelectorAll(".cc-event__line .cc-cal").length,
+  windowLinks: document.querySelectorAll("a[data-cc-window]").length,
+  descriptions: document.querySelectorAll(".cc-event__summary, .cc-carousel__excerpt, .cc-carousel__more").length,
+  locations: document.querySelectorAll(".cc-event__meta").length,
+  registerLinks: [...document.querySelectorAll("a")].filter((a) => /^(Register|Inscribirse)/.test(a.textContent.trim())).length,
+  firstCards: [...document.querySelectorAll(".cc-event, .cc-carousel__item")].slice(0, 4).map((c) => c.innerText.replace(/\s*\n\s*/g, " | ")),
+}));
+console.log(JSON.stringify(facts, null, 2));
+const pill = page.locator(".cc-events--editorial .cc-pill--solid").first();
+const href = await pill.getAttribute("href");
+const [win] = await Promise.all([ctx.waitForEvent("page", { timeout: 10000 }).catch(() => null), pill.click()]);
+console.log("Details click:", win ? `separate window ${await win.evaluate(() => outerWidth + "x" + outerHeight).catch(() => "?")} -> ${href}` : "no window");
+console.log("page stayed put:", page.url() === url);
+console.log("errors:", errors);
+await browser.close();

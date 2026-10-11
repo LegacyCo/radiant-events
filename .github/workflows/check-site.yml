@@ -1,12 +1,12 @@
-# One-off diagnostic: render live Radiant pages and report what the events embed does. Safe to delete.
+# Renders the live preview page and reports what the embeds show. Safe to delete.
 name: Check live site
 
 on:
   workflow_dispatch:
     inputs:
-      urls:
-        description: "Arguments for tools/check_site.mjs"
-        default: "https://radiantcentralcoast.com/ https://radiantcentralcoast.com/events"
+      url:
+        description: "Page to check"
+        default: "https://legacyco.github.io/radiant-events/preview.html"
 
 permissions:
   contents: read
@@ -19,4 +19,5 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
-      - run: node tools/check_site.mjs ${{ inputs.urls }}
+      - run: npm install --no-save playwright@1.48.2 && npx playwright install --with-deps chromium
+      - run: node tools/check_site.mjs "${{ inputs.url }}"
