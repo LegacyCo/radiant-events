@@ -178,15 +178,22 @@ def fetch_pco_registrations(client: PCOClient, subdomain: str = None) -> list:
 def reg_from_item(item: dict, subdomain: str = None) -> dict:
     """One registration in a shape both sources share."""
     a = item.get("attributes") or {}
-    url = a.get("new_registration_url") or a.get("registration_url") or a.get("public_url")
+    # public_url is the registration's event page; new_registration_url jumps straight into the form.
+    url = a.get("public_url") or a.get("new_registration_url") or a.get("registration_url")
     if not url and subdomain and item.get("id"):
         url = f"https://{subdomain}.churchcenter.com/registrations/events/{item['id']}"
     return {
+        "id": str(item.get("id") or ""),
         "name": a.get("name") or "",
         "url": url,
         "start": parse_ts(a.get("starts_at")),
         "end": parse_ts(a.get("ends_at")),
         "archived": bool(a.get("archived") or a.get("archived_at")),
+        "image": a.get("logo_url") or "",
+        "description": a.get("stripped_description") or strip_html(a.get("description")),
+        # Listed publicly, not a hidden link-only signup.
+        "listed": a.get("listed", True) is not False and not a.get("link_only") and not a.get("direct_link_only")
+        and a.get("visibility", "public") == "public",
     }
 
 
@@ -347,6 +354,116 @@ def build_feed(instances, events, signup_index, tz: ZoneInfo, now: datetime,
     return feed
 
 
+# ── Church Center source ──────────────────────────────────────────────────
+#
+# api.churchcenter.com/calendar/v2/events lists one item per occurrence (a
+# weekly event shows up once per week), grouped by event_group. Location comes
+# from include=location. Shape confirmed against Radiant's live calendar.
+
+def fetch_church_center_events(client: PCOClient, since: datetime, until: datetime):
+    params = {
+        "include": "location",
+        "per_page": 100,
+        "where[starts_at][gte]": iso_z(since),
+        "where[starts_at][lte]": iso_z(until),
+    }
+    items, included = client.paginate("/calendar/v2/events", params)
+    lo, hi = iso_z(since), iso_z(until)
+    items = [i for i in items if lo <= iso_z(parse_ts((i.get("attributes") or {}).get("starts_at")) or since) <= hi]
+    locations = {i["id"]: i.get("attributes") or {} for i in included if i.get("type") == "Location"}
+    return items, locations
+
+
+def format_location(loc: dict) -> str:
+    if not loc or loc.get("display_on_church_center") is False:
+        return ""
+    name = (loc.get("name") or "").strip()
+    address = ", ".join(line.strip() for line in (loc.get("full_formatted_address") or "").splitlines() if line.strip())
+    if name and address and not address.startswith(name):
+        return f"{name} - {address}"
+    return address or name
+
+
+def build_feed_from_church_center(items: list, locations: dict, regs: list, tz: ZoneInfo, now: datetime) -> list:
+    feed = []
+    for item in items:
+        a = item.get("attributes") or {}
+        start = parse_ts(a.get("starts_at"))
+        if not start:
+            continue
+        end = parse_ts(a.get("ends_at")) or start
+        title = (a.get("name") or "Untitled event").strip()
+        description_html = a.get("description") or ""
+        linked = CC_REG_LINK.search(description_html)
+        reg = find_registration(title, start, regs)
+        loc_id = ((((item.get("relationships") or {}).get("location") or {}).get("data")) or {}).get("id")
+
+        feed.append({
+            "id": str(item["id"]),
+            "event_id": str(a.get("event_group") or item["id"]),
+            "title": title,
+            "summary": "",
+            "description": clean_description(description_html),
+            "description_html": description_html,
+            "start": iso_z(start),
+            "end": iso_z(end),
+            "start_local": start.astimezone(tz).isoformat(),
+            "end_local": end.astimezone(tz).isoformat(),
+            "all_day": bool(a.get("all_day_event")),
+            "location": format_location(locations.get(loc_id)),
+            "recurrence": (a.get("recurrence_description") or "") if a.get("recurring") else "",
+            "image": a.get("image_url") or (reg or {}).get("image") or "",
+            "featured": bool(a.get("featured")),
+            "registration_url": linked.group(0) if linked else (reg or {}).get("url"),
+            "details_url": a.get("public_url") or "",
+            "status": "upcoming" if end >= now else "past",
+            "updated_at": "",
+        })
+    feed.sort(key=lambda e: e["start"])
+    return feed
+
+
+def add_registration_only_events(feed: list, regs: list, tz: ZoneInfo, now: datetime,
+                                 since: datetime, until: datetime) -> list:
+    """Public registrations with no calendar event (a breakfast that only lives in
+    Registrations) still belong on the website. Skip any a calendar event covers."""
+    used = {e["registration_url"] for e in feed if e["registration_url"]}
+    added = []
+    for r in regs:
+        if r["archived"] or not r["listed"] or not r["url"] or not r["start"] or r["url"] in used:
+            continue
+        if not (since <= r["start"] <= until):
+            continue
+        key = normalize_name(r["name"])
+        near = [e for e in feed if abs((parse_ts(e["start"]) - r["start"]).total_seconds()) <= 2 * 86400]
+        if any(key and (key in normalize_name(e["title"]) or normalize_name(e["title"]) in key
+                        or SequenceMatcher(None, key, normalize_name(e["title"])).ratio() >= 0.6) for e in near):
+            continue
+        end = r["end"] or r["start"]
+        added.append({
+            "id": f"reg-{r['id']}",
+            "event_id": f"reg-{r['id']}",
+            "title": r["name"],
+            "summary": "",
+            "description": r["description"],
+            "description_html": "",
+            "start": iso_z(r["start"]),
+            "end": iso_z(end),
+            "start_local": r["start"].astimezone(tz).isoformat(),
+            "end_local": end.astimezone(tz).isoformat(),
+            "all_day": False,
+            "location": "",
+            "recurrence": "",
+            "image": r["image"],
+            "featured": False,
+            "registration_url": r["url"],
+            "details_url": "",
+            "status": "upcoming" if end >= now else "past",
+            "updated_at": "",
+        })
+    return sorted(feed + added, key=lambda e: e["start"])
+
+
 # ── ICS source ────────────────────────────────────────────────────────────
 
 RRULE_DAYS = {"MO": "Monday", "TU": "Tuesday", "WE": "Wednesday", "TH": "Thursday",
@@ -378,6 +495,12 @@ def to_local(value, tz: ZoneInfo) -> datetime:
 
 
 def match_registration(title: str, start: datetime, regs: list):
+    """URL of the registration for a calendar event, or None."""
+    reg = find_registration(title, start, regs)
+    return reg["url"] if reg else None
+
+
+def find_registration(title: str, start: datetime, regs: list):
     """Best registration for a calendar event by name, checked against dates so
     a one-off signup doesn't attach to every week of a recurring event."""
     key = normalize_name(title)
@@ -396,7 +519,7 @@ def match_registration(title: str, start: datetime, regs: list):
         last = (best["end"] or best["start"]) + slack
         if not (first <= start <= last):
             return None
-    return best["url"]
+    return best
 
 
 def clean_description(description_html) -> str:
@@ -662,13 +785,12 @@ def main():
         if not sub:
             sys.exit("Set --church-center-subdomain (or CHURCH_CENTER_SUBDOMAIN) for --source churchcenter.")
         client = ChurchCenterClient(sub, verbose=args.verbose)
-        instances, events = fetch_event_instances(client, since, until)
+        items, locations = fetch_church_center_events(client, since, until)
         regs = [] if args.skip_registrations else fetch_public_registrations(sub)
-        print(f"   {len(instances)} instances, {len(events)} events, {len(regs)} registrations", file=sys.stderr)
-        raw = {"instances": instances, "events": list(events.values())}
-        feed = build_feed(instances, events, build_signup_index(regs), tz, now,
-                          include_hidden=args.include_hidden, include_unapproved=args.include_unapproved,
-                          regs=regs, subdomain=sub)
+        print(f"   {len(items)} event dates, {len(regs)} registrations", file=sys.stderr)
+        raw = {"events": items, "locations": locations}
+        feed = build_feed_from_church_center(items, locations, regs, tz, now)
+        feed = add_registration_only_events(feed, regs, tz, now, since, until)
     else:
         if not args.ics_url:
             sys.exit("Set --ics-url (or ICS_URL) for --source ics.")
