@@ -33,7 +33,7 @@ if (slider) {
   for (let k = 0; k < 10; k++) { await page.click(".cc-slider__arrow--next"); await page.waitForTimeout(700); }
   console.log("slider after 10 next:", JSON.stringify(await page.evaluate(() => [...document.querySelectorAll(".cc-slider__item")].filter((i) => !i.inert).map((i) => i.querySelector("h3").textContent))));
 }
-const pill = page.locator(".cc-events--editorial .cc-pill--solid").first();
+const pill = page.locator(".cc-events--editorial:not(.cc-events--slider) .cc-pill--solid").first();
 const href = await pill.getAttribute("href");
 const [win] = await Promise.all([ctx.waitForEvent("page", { timeout: 10000 }).catch(() => null), pill.click()]);
 console.log("Details click:", win ? `separate window ${await win.evaluate(() => outerWidth + "x" + outerHeight).catch(() => "?")} -> ${href}` : "no window");
