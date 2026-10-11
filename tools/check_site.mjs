@@ -1,21 +1,20 @@
-// One-off: screenshot each embed section of a page (default: the live preview) with real data.
-import { chromium } from "playwright";
-import { mkdirSync } from "fs";
-mkdirSync("shots", { recursive: true });
-const url = process.argv[2] && process.argv[2] !== "unused" ? process.argv[2] : "https://legacyco.github.io/radiant-events/preview.html";
-const browser = await chromium.launch();
-for (const [label, width] of [["desktop", 1440], ["mobile", 390]]) {
-  const page = await browser.newPage({ viewport: { width, height: 1000 } });
-  const errors = [];
-  page.on("pageerror", (e) => errors.push(e.message));
-  await page.goto(url, { waitUntil: "networkidle" });
-  await page.waitForTimeout(3000);
-  const sections = page.locator("section");
-  const n = await sections.count();
-  for (let i = 0; i < n; i++) {
-    await sections.nth(i).screenshot({ path: `shots/preview_${label}_${i + 1}.png` });
+// One-off: does Church Center allow framing with ?open-in-church-center-modal=true?
+const base = "https://radiantcentralcoast.churchcenter.com";
+const paths = ["/registrations/events/3919181", "/calendar/event/200190659", "/registrations", "/calendar", "/giving", "/groups", "/home", "/"];
+const params = ["", "?open-in-church-center-modal=true", "?embed=true"];
+const headerSets = {
+  plain: {},
+  "iframe from radiantcentralcoast.com": {
+    "Sec-Fetch-Dest": "iframe", "Sec-Fetch-Mode": "navigate", "Sec-Fetch-Site": "cross-site",
+    Referer: "https://radiantcentralcoast.com/events",
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0 Safari/537.36",
+  },
+};
+for (const [label, headers] of Object.entries(headerSets)) {
+  console.log(`\n##### ${label}`);
+  for (const p of paths) for (const q of params) {
+    const r = await fetch(base + p + q, { headers, redirect: "manual" });
+    const csp = (r.headers.get("content-security-policy") || "").match(/frame-ancestors[^;]*/);
+    console.log(`${String(r.status).padEnd(4)} xfo=${(r.headers.get("x-frame-options") || "-").padEnd(10)} csp=${csp ? csp[0] : "-"}  ${p}${q}${r.headers.get("location") ? "  -> " + r.headers.get("location") : ""}`);
   }
-  console.log(label, "sections:", n, "cards:", await page.locator(".cc-event, .cc-carousel__item").count(), "errors:", JSON.stringify(errors));
-  await page.close();
 }
-await browser.close();
