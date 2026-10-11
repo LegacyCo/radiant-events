@@ -15,7 +15,7 @@
   if (!document.querySelector('style[data-cc-style="' + name + '"]')) {
     var style = document.createElement("style");
     style.setAttribute("data-cc-style", name);
-    style.textContent = "  .cc-events {\n    /* BRAND: change these to match the site */\n    --cc-accent: #474D47;          /* button + active tab color */\n    --cc-accent-text: #FCF2BF;\n    --cc-muted: rgba(71, 77, 71, .8);\n    --cc-border: rgba(190, 173, 147, .7);\n    --cc-card-bg: transparent;\n    --cc-radius: 0px;          /* card corners */\n    --cc-btn-radius: 300px;       /* button corners */\n    --cc-font: aktiv-grotesk-condensed, \"Archivo Narrow\", \"Arial Narrow\", sans-serif;         /* e.g. the site's body font, with fallbacks */\n    --cc-ph-bg: rgba(190, 173, 147, .35);  /* editorial style: block for events without a photo */\n    --cc-tag-bg: #FFFFFF;          /* editorial style: date tag on the photo */\n    --cc-tag-text: #474D47;\n    --cc-heading-font: span-semiboldcomp, aktiv-grotesk-condensed, \"Archivo Narrow\", serif; /* carousel heading */\n    font-family: var(--cc-font);\n    color: inherit;\n    max-width: 1100px;\n    margin: 0 auto;\n  }\n  .cc-events__tabs { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }\n  .cc-events__tab {\n    font: inherit; font-size: .9rem; letter-spacing: .04em; text-transform: uppercase;\n    padding: 10px 18px; border: 1px solid var(--cc-border); border-radius: 999px;\n    background: transparent; color: inherit; cursor: pointer;\n  }\n  .cc-events__tab.is-active { background: var(--cc-accent); color: var(--cc-accent-text); border-color: var(--cc-accent); }\n  .cc-events__list { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }\n  .cc-event {\n    display: flex; flex-direction: column; border: 1px solid var(--cc-border);\n    border-radius: var(--cc-radius); overflow: hidden; background: var(--cc-card-bg);\n  }\n  .cc-event__img { aspect-ratio: 16 / 9; width: 100%; object-fit: cover; display: block; background: var(--cc-border); }\n  .cc-event__body { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 8px; flex: 1; }\n  .cc-event__date { font-size: .85rem; letter-spacing: .05em; text-transform: uppercase; color: var(--cc-muted); margin: 0; }\n  .cc-event__title { font-size: 1.25rem; line-height: 1.25; margin: 0; }\n  .cc-event__meta, .cc-event__summary { margin: 0; font-size: .95rem; color: var(--cc-muted); overflow-wrap: anywhere; }\n  .cc-event__badge {\n    align-self: flex-start; font-size: .7rem; letter-spacing: .08em; text-transform: uppercase;\n    padding: 3px 8px; border-radius: 4px; background: var(--cc-accent); color: var(--cc-accent-text);\n  }\n  .cc-event__actions { margin-top: auto; padding-top: 10px; display: flex; gap: 10px; flex-wrap: wrap; }\n  .cc-event__btn {\n    display: inline-block; padding: 10px 16px; border-radius: var(--cc-btn-radius); font-size: .9rem;\n    text-decoration: none !important; border: 1px solid var(--cc-accent);\n  }\n  .cc-event__btn--primary { background: var(--cc-accent); color: var(--cc-accent-text) !important; }\n  .cc-event__btn--ghost { background: transparent; color: inherit !important; }\n  .cc-events__msg { grid-column: 1 / -1; color: var(--cc-muted); }\n  .cc-events__more {\n    display: block; margin: 28px auto 0; font: inherit; padding: 10px 22px; cursor: pointer;\n    border: 1px solid var(--cc-border); border-radius: 999px; background: transparent; color: inherit;\n  }\n  .cc-events__more[hidden], .cc-events__stale[hidden], .cc-events__tabs[hidden] { display: none; }\n\n  /* EDITORIAL style (STYLE: \"editorial\"): a blog-style grid. Photo, small date,\n     bold uppercase title, one line of text, underlined text links, no boxes. */\n  .cc-events--editorial .cc-events__list { gap: 48px 60px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }\n  .cc-events--editorial .cc-event { border: 0; border-radius: 0; background: transparent; overflow: visible; }\n  .cc-event__media { position: relative; display: block; margin-bottom: 20px; text-decoration: none !important; }\n  .cc-events--editorial .cc-event__img, .cc-event__ph {\n    display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; margin: 0; background: var(--cc-ph-bg);\n  }\n  .cc-event__tag {\n    position: absolute; top: 12px; right: 12px; min-width: 58px; padding: 8px 10px 7px; text-align: center;\n    background: var(--cc-tag-bg); color: var(--cc-tag-text); line-height: 1;\n  }\n  .cc-event__tag-month { display: block; font-size: .85rem; text-transform: uppercase; }\n  .cc-event__tag-day { display: block; font-size: 1.75rem; margin-top: 3px; }\n  .cc-events--editorial .cc-event__title a { color: inherit !important; text-decoration: none !important; }\n  .cc-events--editorial .cc-event__title a:hover { text-decoration: underline !important; text-underline-offset: 4px; }\n  .cc-events--editorial .cc-event__body { padding: 0; gap: 10px; }\n  .cc-events--editorial .cc-event__date { font-size: .95rem; letter-spacing: 0; text-transform: none; color: var(--cc-muted); margin: -4px 0 0; }\n  .cc-events--editorial .cc-event__meta { font-size: .85rem; }\n  .cc-events--editorial .cc-event__title { font-size: 1.4rem; font-weight: 700; line-height: 1.15; text-transform: uppercase; letter-spacing: 0; }\n  .cc-events--editorial .cc-event__actions { padding-top: 4px; gap: 20px; }\n  .cc-events--editorial .cc-event__btn {\n    padding: 0; border: 0; border-radius: 0; background: none !important; color: inherit !important;\n    font-size: 1rem; text-decoration: underline !important; text-underline-offset: 3px;\n  }\n  .cc-events--editorial .cc-event__btn--primary { font-weight: 700; }\n  .cc-events--editorial .cc-events__tabs { gap: 28px; margin-bottom: 32px; }\n  .cc-events--editorial .cc-events__tab {\n    border: 0; border-radius: 0; padding: 4px 0; background: none; color: var(--cc-muted); font-size: 1rem;\n  }\n  .cc-events--editorial .cc-events__tab.is-active {\n    background: none; color: inherit; font-weight: 700; text-decoration: underline; text-underline-offset: 6px;\n  }\n  .cc-events--editorial .cc-events__more, .cc-events--editorial .cc-events__all {\n    border: 0; border-radius: 0; padding: 6px 0; text-decoration: underline !important; text-underline-offset: 3px;\n  }\n  .cc-events--editorial .cc-event__badge { border-radius: 0; }\n\n  /* CAROUSEL layout (LAYOUT: \"carousel\"): Squarespace's summary carousel. A row of\n     cards with arrows that move a page at a time; swipe on phones. */\n  .cc-carousel__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 18px; }\n  .cc-carousel__heading {\n    margin: 0; font-family: var(--cc-heading-font); font-size: 1.6rem; line-height: 1.1; text-transform: uppercase;\n  }\n  .cc-carousel__pager { display: flex; gap: 10px; margin-left: auto; }\n  .cc-carousel__arrow {\n    display: flex; align-items: center; justify-content: center; width: 26px; height: 26px; padding: 0;\n    border: 0; background: none; color: inherit; cursor: pointer;\n  }\n  .cc-carousel__arrow::before {\n    content: \"\"; width: 9px; height: 9px; border-left: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor;\n    transform: translateX(2px) rotate(45deg);\n  }\n  .cc-carousel__arrow--next::before { transform: translateX(-2px) rotate(-135deg); }\n  .cc-carousel__arrow:disabled { opacity: .3; cursor: default; }\n  .cc-carousel__viewport { display: block; overflow: hidden; margin: 0 -10px; }\n  .cc-carousel__track { display: flex; transition: transform .45s ease; }\n  .cc-carousel__item { flex: 0 0 calc(100% / var(--cc-per-view, 3)); box-sizing: border-box; min-width: 0; padding: 0 10px; }\n  .cc-carousel__media { display: block; margin-bottom: 15px; }\n  .cc-carousel__img, .cc-carousel__media .cc-event__ph {\n    display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; margin: 0; background: var(--cc-ph-bg);\n  }\n  .cc-carousel__date { margin: 0 0 10px; font-size: 13px; line-height: 1.4; letter-spacing: .015em; }\n  .cc-carousel__title { margin: 0 0 10px; font-size: 20px; line-height: 1.2; font-weight: 600; letter-spacing: .01em; text-transform: uppercase; }\n  .cc-carousel__title a, .cc-carousel__more { color: inherit !important; text-decoration: none !important; }\n  .cc-carousel__title a:hover, .cc-carousel__more:hover { text-decoration: underline !important; text-underline-offset: 3px; }\n  .cc-carousel__excerpt {\n    margin: 0 0 10px; font-size: 14px; line-height: 1.45;\n    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;\n  }\n  .cc-carousel__more { display: inline-block; font-size: 14px; line-height: 20px; }\n  @media (prefers-reduced-motion: reduce) { .cc-carousel__track { transition: none; } }\n  .cc-events__all {\n    display: table; margin: 28px auto 0; padding: 10px 22px; border: 1px solid var(--cc-accent);\n    border-radius: var(--cc-btn-radius); color: inherit !important; text-decoration: none !important;\n  }\n  .cc-events__stale {\n    margin: 0 0 20px; padding: 12px 16px; border: 1px solid var(--cc-border);\n    border-radius: var(--cc-radius); font-size: .9rem; color: var(--cc-muted);\n  }\n  .cc-events__stale a { color: inherit; }\n  .cc-events--past .cc-event { opacity: .85; }\n  .cc-cal { margin-top: 12px; font-size: .85rem; }\n  .cc-cal summary {\n    display: inline-block; cursor: pointer; list-style: none; color: var(--cc-muted);\n    text-decoration: underline; text-underline-offset: 3px;\n  }\n  .cc-cal summary::-webkit-details-marker { display: none; }\n  .cc-cal__links { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: 8px; }\n  .cc-cal__links a { color: inherit !important; }\n  .cc-events__subscribe { margin: 28px auto 0; text-align: center; }\n  .cc-events__subscribe .cc-cal__links { justify-content: center; }\n\n  /* PILL buttons (PILL_BUTTONS: true): the date, a Details pill and an Add to\n     calendar pill share one line under the title, wrapping on narrow cards. */\n  .cc-event__line { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }\n  .cc-events--editorial .cc-event__line .cc-event__date, .cc-event__line .cc-carousel__date { margin: 0; }\n  .cc-event__pills { display: flex; align-items: center; gap: 8px; }\n  .cc-pill {\n    display: inline-flex; align-items: center; box-sizing: border-box; margin: 0; padding: 7px 15px;\n    border: 1px solid var(--cc-accent); border-radius: var(--cc-btn-radius); font: inherit; font-size: 14px;\n    line-height: 1.15; letter-spacing: .02em; white-space: nowrap; cursor: pointer; text-decoration: none !important;\n  }\n  .cc-pill--solid { background: var(--cc-accent); color: var(--cc-accent-text) !important; }\n  .cc-pill--outline { background: transparent; color: inherit !important; }\n  .cc-pill:hover { opacity: .85; }\n  .cc-event__line .cc-cal { position: relative; margin: 0; font-size: inherit; }\n  .cc-event__line .cc-cal summary.cc-pill { display: inline-flex; color: inherit; text-decoration: none; }\n  .cc-event__line .cc-cal__links {\n    position: absolute; z-index: 20; top: calc(100% + 6px); right: 0; min-width: 100%; margin: 0;\n    flex-direction: column; flex-wrap: nowrap; gap: 0; padding: 6px 0; background: #fff; color: #222;\n    border: 1px solid var(--cc-border); box-shadow: 0 6px 18px rgba(0,0,0,.12); font-size: 14px;\n  }\n  .cc-carousel__item .cc-event__line .cc-cal__links { top: auto; bottom: calc(100% + 6px); }\n  .cc-event__line .cc-cal__links a { display: block; padding: 7px 14px; white-space: nowrap; text-decoration: none !important; }\n  .cc-event__line .cc-cal__links a:hover { background: rgba(0,0,0,.05); }";
+    style.textContent = "  .cc-events {\n    /* BRAND: change these to match the site */\n    --cc-accent: #474D47;          /* button + active tab color */\n    --cc-accent-text: #FCF2BF;\n    --cc-muted: rgba(71, 77, 71, .8);\n    --cc-border: rgba(190, 173, 147, .7);\n    --cc-card-bg: transparent;\n    --cc-radius: 0px;          /* card corners */\n    --cc-btn-radius: 300px;       /* button corners */\n    --cc-font: aktiv-grotesk-condensed, \"Archivo Narrow\", \"Arial Narrow\", sans-serif;         /* e.g. the site's body font, with fallbacks */\n    --cc-ph-bg: rgba(190, 173, 147, .35);  /* editorial style: block for events without a photo */\n    --cc-tag-bg: #FFFFFF;          /* editorial style: date tag on the photo */\n    --cc-tag-text: #474D47;\n    --cc-heading-font: span-semiboldcomp, aktiv-grotesk-condensed, \"Archivo Narrow\", serif; /* carousel heading */\n    font-family: var(--cc-font);\n    color: inherit;\n    max-width: 1100px;\n    margin: 0 auto;\n  }\n  .cc-events__tabs { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }\n  .cc-events__tab {\n    font: inherit; font-size: .9rem; letter-spacing: .04em; text-transform: uppercase;\n    padding: 10px 18px; border: 1px solid var(--cc-border); border-radius: 999px;\n    background: transparent; color: inherit; cursor: pointer;\n  }\n  .cc-events__tab.is-active { background: var(--cc-accent); color: var(--cc-accent-text); border-color: var(--cc-accent); }\n  .cc-events__list { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }\n  .cc-event {\n    display: flex; flex-direction: column; border: 1px solid var(--cc-border);\n    border-radius: var(--cc-radius); overflow: hidden; background: var(--cc-card-bg);\n  }\n  .cc-event__img { aspect-ratio: 16 / 9; width: 100%; object-fit: cover; display: block; background: var(--cc-border); }\n  .cc-event__body { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 8px; flex: 1; }\n  .cc-event__date { font-size: .85rem; letter-spacing: .05em; text-transform: uppercase; color: var(--cc-muted); margin: 0; }\n  .cc-event__title { font-size: 1.25rem; line-height: 1.25; margin: 0; }\n  .cc-event__meta, .cc-event__summary { margin: 0; font-size: .95rem; color: var(--cc-muted); overflow-wrap: anywhere; }\n  .cc-event__badge {\n    align-self: flex-start; font-size: .7rem; letter-spacing: .08em; text-transform: uppercase;\n    padding: 3px 8px; border-radius: 4px; background: var(--cc-accent); color: var(--cc-accent-text);\n  }\n  .cc-event__actions { margin-top: auto; padding-top: 10px; display: flex; gap: 10px; flex-wrap: wrap; }\n  .cc-event__btn {\n    display: inline-block; padding: 10px 16px; border-radius: var(--cc-btn-radius); font-size: .9rem;\n    text-decoration: none !important; border: 1px solid var(--cc-accent);\n  }\n  .cc-event__btn--primary { background: var(--cc-accent); color: var(--cc-accent-text) !important; }\n  .cc-event__btn--ghost { background: transparent; color: inherit !important; }\n  .cc-events__msg { grid-column: 1 / -1; color: var(--cc-muted); }\n  .cc-events__more {\n    display: block; margin: 28px auto 0; font: inherit; padding: 10px 22px; cursor: pointer;\n    border: 1px solid var(--cc-border); border-radius: 999px; background: transparent; color: inherit;\n  }\n  .cc-events__more[hidden], .cc-events__stale[hidden], .cc-events__tabs[hidden] { display: none; }\n\n  /* EDITORIAL style (STYLE: \"editorial\"): a blog-style grid. Photo, small date,\n     bold uppercase title, one line of text, underlined text links, no boxes. */\n  .cc-events--editorial .cc-events__list { gap: 48px 60px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }\n  .cc-events--editorial .cc-event { border: 0; border-radius: 0; background: transparent; overflow: visible; }\n  .cc-event__media { position: relative; display: block; margin-bottom: 20px; text-decoration: none !important; }\n  .cc-events--editorial .cc-event__img, .cc-event__ph {\n    display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; margin: 0; background: var(--cc-ph-bg);\n  }\n  .cc-event__tag {\n    position: absolute; top: 12px; right: 12px; min-width: 58px; padding: 8px 10px 7px; text-align: center;\n    background: var(--cc-tag-bg); color: var(--cc-tag-text); line-height: 1;\n  }\n  .cc-event__tag-month { display: block; font-size: .85rem; text-transform: uppercase; }\n  .cc-event__tag-day { display: block; font-size: 1.75rem; margin-top: 3px; }\n  .cc-events--editorial .cc-event__title a { color: inherit !important; text-decoration: none !important; }\n  .cc-events--editorial .cc-event__title a:hover { text-decoration: underline !important; text-underline-offset: 4px; }\n  .cc-events--editorial .cc-event__body { padding: 0; gap: 10px; }\n  .cc-events--editorial .cc-event__date { font-size: .95rem; letter-spacing: 0; text-transform: none; color: var(--cc-muted); margin: -4px 0 0; }\n  .cc-events--editorial .cc-event__meta { font-size: .85rem; }\n  .cc-events--editorial .cc-event__title { font-size: 1.4rem; font-weight: 700; line-height: 1.15; text-transform: uppercase; letter-spacing: 0; }\n  .cc-events--editorial .cc-event__actions { padding-top: 4px; gap: 20px; }\n  .cc-events--editorial .cc-event__btn {\n    padding: 0; border: 0; border-radius: 0; background: none !important; color: inherit !important;\n    font-size: 1rem; text-decoration: underline !important; text-underline-offset: 3px;\n  }\n  .cc-events--editorial .cc-event__btn--primary { font-weight: 700; }\n  .cc-events--editorial .cc-events__tabs { gap: 28px; margin-bottom: 32px; }\n  .cc-events--editorial .cc-events__tab {\n    border: 0; border-radius: 0; padding: 4px 0; background: none; color: var(--cc-muted); font-size: 1rem;\n  }\n  .cc-events--editorial .cc-events__tab.is-active {\n    background: none; color: inherit; font-weight: 700; text-decoration: underline; text-underline-offset: 6px;\n  }\n  .cc-events--editorial .cc-events__more, .cc-events--editorial .cc-events__all {\n    border: 0; border-radius: 0; padding: 6px 0; text-decoration: underline !important; text-underline-offset: 3px;\n  }\n  .cc-events--editorial .cc-event__badge { border-radius: 0; }\n\n  /* CAROUSEL layout (LAYOUT: \"carousel\"): Squarespace's summary carousel. A row of\n     cards with arrows that move a page at a time; swipe on phones. */\n  .cc-carousel__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 18px; }\n  .cc-carousel__heading {\n    margin: 0; font-family: var(--cc-heading-font); font-size: 1.6rem; line-height: 1.1; text-transform: uppercase;\n  }\n  .cc-carousel__pager { display: flex; gap: 10px; margin-left: auto; }\n  .cc-carousel__arrow {\n    display: flex; align-items: center; justify-content: center; width: 26px; height: 26px; padding: 0;\n    border: 0; background: none; color: inherit; cursor: pointer;\n  }\n  .cc-carousel__arrow::before {\n    content: \"\"; width: 9px; height: 9px; border-left: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor;\n    transform: translateX(2px) rotate(45deg);\n  }\n  .cc-carousel__arrow--next::before { transform: translateX(-2px) rotate(-135deg); }\n  .cc-carousel__arrow:disabled { opacity: .3; cursor: default; }\n  .cc-carousel__viewport { display: block; overflow: hidden; margin: 0 -10px; }\n  .cc-carousel__track { display: flex; transition: transform .45s ease; }\n  .cc-carousel__item { flex: 0 0 calc(100% / var(--cc-per-view, 3)); box-sizing: border-box; min-width: 0; padding: 0 10px; }\n  .cc-carousel__media { display: block; margin-bottom: 15px; }\n  .cc-carousel__img, .cc-carousel__media .cc-event__ph {\n    display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; margin: 0; background: var(--cc-ph-bg);\n  }\n  .cc-carousel__date { margin: 0 0 10px; font-size: 13px; line-height: 1.4; letter-spacing: .015em; }\n  .cc-carousel__title { margin: 0 0 10px; font-size: 20px; line-height: 1.2; font-weight: 600; letter-spacing: .01em; text-transform: uppercase; }\n  .cc-carousel__title a, .cc-carousel__more { color: inherit !important; text-decoration: none !important; }\n  .cc-carousel__title a:hover, .cc-carousel__more:hover { text-decoration: underline !important; text-underline-offset: 3px; }\n  .cc-carousel__excerpt {\n    margin: 0 0 10px; font-size: 14px; line-height: 1.45;\n    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;\n  }\n  .cc-carousel__more { display: inline-block; font-size: 14px; line-height: 20px; }\n  @media (prefers-reduced-motion: reduce) { .cc-carousel__track { transition: none; } }\n  .cc-events__all {\n    display: table; margin: 28px auto 0; padding: 10px 22px; border: 1px solid var(--cc-accent);\n    border-radius: var(--cc-btn-radius); color: inherit !important; text-decoration: none !important;\n  }\n  .cc-events__stale {\n    margin: 0 0 20px; padding: 12px 16px; border: 1px solid var(--cc-border);\n    border-radius: var(--cc-radius); font-size: .9rem; color: var(--cc-muted);\n  }\n  .cc-events__stale a { color: inherit; }\n  .cc-events--past .cc-event { opacity: .85; }\n  .cc-cal { margin-top: 12px; font-size: .85rem; }\n  .cc-cal summary {\n    display: inline-block; cursor: pointer; list-style: none; color: var(--cc-muted);\n    text-decoration: underline; text-underline-offset: 3px;\n  }\n  .cc-cal summary::-webkit-details-marker { display: none; }\n  .cc-cal__links { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: 8px; }\n  .cc-cal__links a { color: inherit !important; }\n  .cc-events__subscribe { margin: 28px auto 0; text-align: center; }\n  .cc-events__subscribe .cc-cal__links { justify-content: center; }\n\n  /* PILL buttons (PILL_BUTTONS: true): the date, a Details pill and an Add to\n     calendar pill share one line under the title, wrapping on narrow cards. */\n  .cc-event__line { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }\n  .cc-events--editorial .cc-event__line .cc-event__date, .cc-event__line .cc-carousel__date { margin: 0; }\n  .cc-event__pills { display: flex; align-items: center; gap: 8px; }\n  .cc-pill {\n    display: inline-flex; align-items: center; box-sizing: border-box; margin: 0; padding: 7px 15px;\n    border: 1px solid var(--cc-accent); border-radius: var(--cc-btn-radius); font: inherit; font-size: 14px;\n    line-height: 1.15; letter-spacing: .02em; white-space: nowrap; cursor: pointer; text-decoration: none !important;\n  }\n  .cc-pill--solid { background: var(--cc-accent); color: var(--cc-accent-text) !important; }\n  .cc-pill--outline { background: transparent; color: inherit !important; }\n  .cc-pill:hover { opacity: .85; }\n  .cc-event__line .cc-cal { position: relative; margin: 0; font-size: inherit; }\n  .cc-event__line .cc-cal summary.cc-pill { display: inline-flex; color: inherit; text-decoration: none; }\n  .cc-event__line .cc-cal__links {\n    position: absolute; z-index: 20; top: calc(100% + 6px); right: 0; min-width: 100%; margin: 0;\n    flex-direction: column; flex-wrap: nowrap; gap: 0; padding: 6px 0; background: #fff; color: #222;\n    border: 1px solid var(--cc-border); box-shadow: 0 6px 18px rgba(0,0,0,.12); font-size: 14px;\n  }\n  .cc-carousel__item .cc-event__line .cc-cal__links { top: auto; bottom: calc(100% + 6px); }\n  .cc-event__line .cc-cal__links a { display: block; padding: 7px 14px; white-space: nowrap; text-decoration: none !important; }\n  .cc-event__line .cc-cal__links a:hover { background: rgba(0,0,0,.05); }\n\n  /* SLIDER layout (LAYOUT: \"slider\"): Squarespace's List Section carousel. Full width,\n     two 16:9 slides with the neighbours peeking in, round arrows over the photos,\n     centred text, loops forever. One slide with the arrows underneath on phones. */\n  .cc-events--slider { max-width: none; position: relative; }\n  .cc-slider__heading {\n    margin: 0 0 30px; padding: 0 16px; text-align: center; font-family: var(--cc-heading-font);\n    font-size: 1.6rem; line-height: 1.1;\n  }\n  .cc-slider__stage { position: relative; }\n  .cc-events--slider .cc-slider__viewport { display: block; overflow: hidden; padding: 0 var(--cc-gutter, 4vw); }\n  .cc-slider__track { display: flex; gap: var(--cc-slide-gap, 40px); will-change: transform; }\n  .cc-slider__track.is-moving { transition: transform .5s ease; }\n  .cc-slider__item { flex: 0 0 var(--cc-slide-w, 45%); min-width: 0; text-align: center; }\n  .cc-slider__media { display: block; text-decoration: none !important; }\n  .cc-slider__img, .cc-slider__media .cc-event__ph {\n    display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; margin: 0; background: var(--cc-ph-bg);\n  }\n  .cc-slider__title {\n    margin: 22px 0 6px; font-family: var(--cc-heading-font); font-size: 21px; font-weight: 600; line-height: 1.1;\n    text-transform: uppercase; letter-spacing: .01em;\n  }\n  .cc-slider__title a { color: inherit !important; text-decoration: none !important; }\n  .cc-slider__title a:hover { text-decoration: underline !important; text-underline-offset: 3px; }\n  .cc-slider__date { margin: 0; font-size: 16px; line-height: 1.3; text-transform: uppercase; }\n  .cc-events--slider .cc-event__line { justify-content: center; margin-top: 4px; }\n  .cc-events--slider .cc-event__line .cc-cal__links { top: auto; bottom: calc(100% + 6px); right: 50%; transform: translateX(50%); }\n  .cc-slider__arrow {\n    position: absolute; z-index: 2; top: calc(var(--cc-slide-img-h, 300px) / 2 - 30px);\n    display: flex; align-items: center; justify-content: center; width: 60px; height: 60px; padding: 0;\n    border: 0; border-radius: 50%; background: var(--cc-arrow-bg, var(--cc-accent)); color: var(--cc-arrow-color, var(--cc-accent-text));\n    cursor: pointer; transition: opacity .2s ease;\n  }\n  .cc-slider__arrow:hover { opacity: .85; }\n  .cc-slider__arrow svg { width: 36px; height: 36px; }\n  .cc-slider__arrow--prev { left: calc(var(--cc-gutter, 4vw) - 15px); }\n  .cc-slider__arrow--prev svg { transform: rotate(180deg); }\n  .cc-slider__arrow--next { right: calc(var(--cc-gutter, 4vw) - 15px); }\n  .cc-slider--narrow .cc-slider__arrows { display: flex; justify-content: center; gap: 18px; margin-top: 20px; }\n  .cc-slider--narrow .cc-slider__arrow { position: static; width: 40px; height: 40px; }\n  .cc-slider--narrow .cc-slider__arrow svg { width: 24px; height: 24px; }\n  .cc-slider__arrows[hidden] { display: none !important; }\n  @media (prefers-reduced-motion: reduce) { .cc-slider__track.is-moving { transition: none; } }";
     document.head.appendChild(style);
   }
   host.className = "cc-events";
@@ -32,10 +32,11 @@
     STYLE: "editorial",              // "editorial" = photo, date, bold title, text links (blog-grid look)
     FEATURED_ONLY: false,        // true = only events starred as Featured in Planning Center
     PAGE_SIZE: 12,
-    LAYOUT: "carousel",              // "compact" = next few upcoming events, no tabs; "carousel" = row with arrows
+    LAYOUT: "slider",              // "compact" = next few upcoming events, no tabs; "carousel" = row with arrows
     COMPACT_COUNT: 3,
     CAROUSEL_COUNT: 9,           // carousel layout: how many upcoming events to scroll through
     CAROUSEL_HEADING: "Coming up at Radiant",        // carousel layout: heading beside the arrows, e.g. "Upcoming events"
+    SLIDER_FULL_WIDTH: true,     // slider layout: stretch edge to edge even inside a narrower section
     EVENTS_PAGE_URL: "",         // compact layout: adds a "See all events" link here, e.g. "/events"
     INCLUDE: [],                 // e.g. ["Español"]: only events with one of these in the title
     EXCLUDE: [],                 // e.g. ["Staff"]: hide events with one of these in the title
@@ -72,7 +73,9 @@
   var state = { all: [], view: "upcoming", shown: 0 };
   if (CONFIG.STYLE === "editorial") root.classList.add("cc-events--editorial");
   var carousel = CONFIG.LAYOUT === "carousel";
-  var compact = CONFIG.LAYOUT === "compact" || carousel;
+  var slider = CONFIG.LAYOUT === "slider";
+  var compact = CONFIG.LAYOUT === "compact" || carousel || slider;
+  var sl = { i: 0, count: 0, clones: 0, perView: 2, track: null, stage: null, arrows: null, busy: false };
   var car = { page: 0, perView: 3, count: 0, track: null, prev: null, next: null };
   if (compact) {
     root.querySelector(".cc-events__tabs").hidden = true;
@@ -107,6 +110,34 @@
       if (dx < 0 && !car.next.disabled) car.page++;
       if (dx > 0 && !car.prev.disabled) car.page--;
       layoutCarousel();
+    });
+  }
+  if (slider) {
+    root.classList.add("cc-events--slider");
+    if (CONFIG.CAROUSEL_HEADING) root.insertBefore(el("h2", "cc-slider__heading", CONFIG.CAROUSEL_HEADING), list);
+    sl.stage = el("div", "cc-slider__stage");
+    root.insertBefore(sl.stage, list);
+    sl.stage.appendChild(list);
+    sl.arrows = el("div", "cc-slider__arrows");
+    [["prev", T.prev, -1], ["next", T.next, 1]].forEach(function (b) {
+      var btn = el("button", "cc-slider__arrow cc-slider__arrow--" + b[0]);
+      btn.type = "button";
+      btn.setAttribute("aria-label", b[1]);
+      btn.innerHTML = '<svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">' +
+        '<path d="M4 18h27M23 10l8 8-8 8"/></svg>';
+      btn.addEventListener("click", function () { moveSlider(b[2]); });
+      sl.arrows.appendChild(btn);
+    });
+    sl.arrows.hidden = true;
+    sl.stage.appendChild(sl.arrows);
+    window.addEventListener("resize", function () { layoutSlider(false); });
+    var slideX = null;
+    list.addEventListener("touchstart", function (ev) { slideX = ev.touches[0].clientX; }, { passive: true });
+    list.addEventListener("touchend", function (ev) {
+      if (slideX === null) return;
+      var dx = ev.changedTouches[0].clientX - slideX;
+      slideX = null;
+      if (Math.abs(dx) >= 40) moveSlider(dx < 0 ? 1 : -1);
     });
   }
   if (!compact && CONFIG.SUBSCRIBE_LINK && feedFile("events.ics")) {
@@ -332,16 +363,17 @@
   }
 
   // ── Carousel layout ─────────────────────────────────────────
-  function carouselCard(e) {
-    var item = el("article", "cc-carousel__item");
+  function carouselCard(e, pre) {
+    pre = pre || "cc-carousel";
+    var item = el("article", pre + "__item");
     var target = e.registration_url || e.details_url;
-    var media = el("a", "cc-carousel__media");
+    var media = el("a", pre + "__media");
     media.setAttribute("aria-hidden", "true");
     media.tabIndex = -1;
     if (target) setLink(media, target);
     var block = el("div", "cc-event__ph");
     if (e.image) {
-      var img = el("img", "cc-carousel__img");
+      var img = el("img", pre + "__img");
       img.src = e.image; img.alt = ""; img.loading = "lazy";
       img.onerror = function () { img.replaceWith(block); };
       media.appendChild(img);
@@ -349,8 +381,8 @@
       media.appendChild(block);
     }
     item.appendChild(media);
-    var when = el("p", "cc-carousel__date", editorialDate(e));
-    var title = el("h3", "cc-carousel__title");
+    var when = el("p", pre + "__date", editorialDate(e));
+    var title = el("h3", pre + "__title");
     if (target) { var a = el("a", "", e.title); setLink(a, target); title.appendChild(a); }
     else title.textContent = e.title;
     if (CONFIG.PILL_BUTTONS) {
@@ -403,9 +435,89 @@
     });
   }
 
+  // ── Slider layout ───────────────────────────────────────────
+  // Copies of the last few slides go in front and of the first few behind, so the
+  // row loops: after sliding onto a copy it jumps, unanimated, to the real slide.
+  function renderSlider(items) {
+    items = items.slice(0, CONFIG.CAROUSEL_COUNT);
+    list.textContent = "";
+    sl.track = null;
+    if (!items.length) {
+      list.className = "cc-events__list";
+      list.appendChild(el("p", "cc-events__msg", T.noUpcoming));
+      sl.arrows.hidden = true;
+      return;
+    }
+    list.className = "cc-slider__viewport";
+    sl.track = el("div", "cc-slider__track");
+    sl.count = items.length;
+    sl.clones = sl.count > 1 ? Math.min(sl.count, 3) : 0;
+    function add(e, copy) {
+      var it = carouselCard(e, "cc-slider");
+      if (copy) { it.setAttribute("aria-hidden", "true"); it.inert = true; }
+      sl.track.appendChild(it);
+    }
+    items.slice(sl.count - sl.clones).forEach(function (e) { add(e, true); });
+    items.forEach(function (e) { add(e, false); });
+    items.slice(0, sl.clones).forEach(function (e) { add(e, true); });
+    sl.track.addEventListener("transitionend", function (ev) {
+      if (ev.target !== sl.track) return;
+      sl.busy = false;
+      sl.track.classList.remove("is-moving");
+      if (sl.i >= sl.clones + sl.count) sl.i -= sl.count;
+      else if (sl.i < sl.clones) sl.i += sl.count;
+      layoutSlider(false);
+    });
+    list.appendChild(sl.track);
+    sl.i = sl.clones;
+    layoutSlider(false);
+  }
+  function moveSlider(d) {
+    if (!sl.track || sl.busy || sl.count < 2) return;
+    sl.i += d;
+    layoutSlider(true);
+    // A transition can be cut short (hidden tab, resize); don't leave the arrows stuck.
+    var track = sl.track;
+    setTimeout(function () { if (sl.busy && track === sl.track) track.dispatchEvent(new Event("transitionend")); }, 800);
+  }
+  function layoutSlider(animate) {
+    if (CONFIG.SLIDER_FULL_WIDTH) {
+      // Edge to edge: line the embed up with the window, whatever section it sits in.
+      root.style.width = ""; root.style.marginLeft = "";
+      var page = document.documentElement.clientWidth;
+      root.style.width = page + "px";
+      root.style.marginLeft = -root.getBoundingClientRect().left + "px";
+    }
+    if (!sl.track) return;
+    var w = list.clientWidth;
+    var wide = w >= 768;
+    var gutter = Math.round(w * 0.04);
+    var gap = wide ? 40 : 20;
+    sl.perView = wide ? 2 : 1;
+    var slideW = (w - 2 * gutter - gap * (sl.perView - 1)) / sl.perView;
+    root.classList.toggle("cc-slider--narrow", !wide);
+    root.style.setProperty("--cc-gutter", gutter + "px");
+    root.style.setProperty("--cc-slide-gap", gap + "px");
+    root.style.setProperty("--cc-slide-w", slideW + "px");
+    root.style.setProperty("--cc-slide-img-h", slideW * 9 / 16 + "px");
+    sl.arrows.hidden = sl.count <= 1;
+    sl.busy = !!animate;
+    sl.track.classList.toggle("is-moving", !!animate);
+    sl.track.style.transform = "translateX(" + (-sl.i * (slideW + gap)) + "px)";
+    if (animate && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      sl.track.dispatchEvent(new Event("transitionend"));
+    }
+    // Only the slides in view are reachable by keyboard and screen readers.
+    Array.prototype.forEach.call(sl.track.children, function (it, n) {
+      var copy = it.getAttribute("aria-hidden") === "true";
+      it.inert = copy || n < sl.i || n >= sl.i + sl.perView;
+    });
+  }
+
   function render(reset) {
     var items = eventsFor(state.view);
     if (carousel) { renderCarousel(items); moreBtn.hidden = true; return; }
+    if (slider) { renderSlider(items); moreBtn.hidden = true; return; }
     if (reset) { list.textContent = ""; state.shown = 0; }
     root.classList.toggle("cc-events--past", state.view === "past");
     if (!items.length) {
