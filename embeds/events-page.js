@@ -15,7 +15,7 @@
   if (!document.querySelector('style[data-cc-style="' + name + '"]')) {
     var style = document.createElement("style");
     style.setAttribute("data-cc-style", name);
-    style.textContent = "  .cc-events {\n    /* BRAND: change these to match the site */\n    --cc-accent: #474D47;          /* button + active tab color */\n    --cc-accent-text: #FCF2BF;\n    --cc-muted: rgba(71, 77, 71, .8);\n    --cc-border: rgba(190, 173, 147, .7);\n    --cc-card-bg: transparent;\n    --cc-radius: 0px;          /* card corners */\n    --cc-btn-radius: 300px;       /* button corners */\n    --cc-font: aktiv-grotesk-condensed, \"Archivo Narrow\", \"Arial Narrow\", sans-serif;         /* e.g. the site's body font, with fallbacks */\n    --cc-ph-bg: rgba(190, 173, 147, .35);  /* editorial style: block for events without a photo */\n    --cc-tag-bg: #FFFFFF;          /* editorial style: date tag on the photo */\n    --cc-tag-text: #474D47;\n    --cc-heading-font: span-semiboldcomp, aktiv-grotesk-condensed, \"Archivo Narrow\", serif; /* carousel heading */\n    font-family: var(--cc-font);\n    color: inherit;\n    max-width: 1100px;\n    margin: 0 auto;\n  }\n  .cc-events__tabs { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }\n  .cc-events__tab {\n    font: inherit; font-size: .9rem; letter-spacing: .04em; text-transform: uppercase;\n    padding: 10px 18px; border: 1px solid var(--cc-border); border-radius: 999px;\n    background: transparent; color: inherit; cursor: pointer;\n  }\n  .cc-events__tab.is-active { background: var(--cc-accent); color: var(--cc-accent-text); border-color: var(--cc-accent); }\n  .cc-events__list { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }\n  .cc-event {\n    display: flex; flex-direction: column; border: 1px solid var(--cc-border);\n    border-radius: var(--cc-radius); overflow: hidden; background: var(--cc-card-bg);\n  }\n  .cc-event__img { aspect-ratio: 16 / 9; width: 100%; object-fit: cover; display: block; background: var(--cc-border); }\n  .cc-event__body { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 8px; flex: 1; }\n  .cc-event__date { font-size: .85rem; letter-spacing: .05em; text-transform: uppercase; color: var(--cc-muted); margin: 0; }\n  .cc-event__title { font-size: 1.25rem; line-height: 1.25; margin: 0; }\n  .cc-event__meta, .cc-event__summary { margin: 0; font-size: .95rem; color: var(--cc-muted); overflow-wrap: anywhere; }\n  .cc-event__badge {\n    align-self: flex-start; font-size: .7rem; letter-spacing: .08em; text-transform: uppercase;\n    padding: 3px 8px; border-radius: 4px; background: var(--cc-accent); color: var(--cc-accent-text);\n  }\n  .cc-event__actions { margin-top: auto; padding-top: 10px; display: flex; gap: 10px; flex-wrap: wrap; }\n  .cc-event__btn {\n    display: inline-block; padding: 10px 16px; border-radius: var(--cc-btn-radius); font-size: .9rem;\n    text-decoration: none !important; border: 1px solid var(--cc-accent);\n  }\n  .cc-event__btn--primary { background: var(--cc-accent); color: var(--cc-accent-text) !important; }\n  .cc-event__btn--ghost { background: transparent; color: inherit !important; }\n  .cc-events__msg { grid-column: 1 / -1; color: var(--cc-muted); }\n  .cc-events__more {\n    display: block; margin: 28px auto 0; font: inherit; padding: 10px 22px; cursor: pointer;\n    border: 1px solid var(--cc-border); border-radius: 999px; background: transparent; color: inherit;\n  }\n  .cc-events__more[hidden], .cc-events__stale[hidden], .cc-events__tabs[hidden] { display: none; }\n\n  /* EDITORIAL style (STYLE: \"editorial\"): a blog-style grid. Photo, small date,\n     bold uppercase title, one line of text, underlined text links, no boxes. */\n  .cc-events--editorial .cc-events__list { gap: 48px 60px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }\n  .cc-events--editorial .cc-event { border: 0; border-radius: 0; background: transparent; overflow: visible; }\n  .cc-event__media { position: relative; display: block; margin-bottom: 20px; text-decoration: none !important; }\n  .cc-events--editorial .cc-event__img, .cc-event__ph {\n    display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; margin: 0; background: var(--cc-ph-bg);\n  }\n  .cc-event__tag {\n    position: absolute; top: 12px; right: 12px; min-width: 58px; padding: 8px 10px 7px; text-align: center;\n    background: var(--cc-tag-bg); color: var(--cc-tag-text); line-height: 1;\n  }\n  .cc-event__tag-month { display: block; font-size: .85rem; text-transform: uppercase; }\n  .cc-event__tag-day { display: block; font-size: 1.75rem; margin-top: 3px; }\n  .cc-events--editorial .cc-event__title a { color: inherit !important; text-decoration: none !important; }\n  .cc-events--editorial .cc-event__title a:hover { text-decoration: underline !important; text-underline-offset: 4px; }\n  .cc-events--editorial .cc-event__body { padding: 0; gap: 10px; }\n  .cc-events--editorial .cc-event__date { font-size: .95rem; letter-spacing: 0; text-transform: none; color: var(--cc-muted); margin: -4px 0 0; }\n  .cc-events--editorial .cc-event__meta { font-size: .85rem; }\n  .cc-events--editorial .cc-event__title { font-size: 1.4rem; font-weight: 700; line-height: 1.15; text-transform: uppercase; letter-spacing: 0; }\n  .cc-events--editorial .cc-event__actions { padding-top: 4px; gap: 20px; }\n  .cc-events--editorial .cc-event__btn {\n    padding: 0; border: 0; border-radius: 0; background: none !important; color: inherit !important;\n    font-size: 1rem; text-decoration: underline !important; text-underline-offset: 3px;\n  }\n  .cc-events--editorial .cc-event__btn--primary { font-weight: 700; }\n  .cc-events--editorial .cc-events__tabs { gap: 28px; margin-bottom: 32px; }\n  .cc-events--editorial .cc-events__tab {\n    border: 0; border-radius: 0; padding: 4px 0; background: none; color: var(--cc-muted); font-size: 1rem;\n  }\n  .cc-events--editorial .cc-events__tab.is-active {\n    background: none; color: inherit; font-weight: 700; text-decoration: underline; text-underline-offset: 6px;\n  }\n  .cc-events--editorial .cc-events__more, .cc-events--editorial .cc-events__all {\n    border: 0; border-radius: 0; padding: 6px 0; text-decoration: underline !important; text-underline-offset: 3px;\n  }\n  .cc-events--editorial .cc-event__badge { border-radius: 0; }\n\n  /* CAROUSEL layout (LAYOUT: \"carousel\"): Squarespace's summary carousel. A row of\n     cards with arrows that move a page at a time; swipe on phones. */\n  .cc-carousel__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 18px; }\n  .cc-carousel__heading {\n    margin: 0; font-family: var(--cc-heading-font); font-size: 1.6rem; line-height: 1.1; text-transform: uppercase;\n  }\n  .cc-carousel__pager { display: flex; gap: 10px; margin-left: auto; }\n  .cc-carousel__arrow {\n    display: flex; align-items: center; justify-content: center; width: 26px; height: 26px; padding: 0;\n    border: 0; background: none; color: inherit; cursor: pointer;\n  }\n  .cc-carousel__arrow::before {\n    content: \"\"; width: 9px; height: 9px; border-left: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor;\n    transform: translateX(2px) rotate(45deg);\n  }\n  .cc-carousel__arrow--next::before { transform: translateX(-2px) rotate(-135deg); }\n  .cc-carousel__arrow:disabled { opacity: .3; cursor: default; }\n  .cc-carousel__viewport { display: block; overflow: hidden; margin: 0 -10px; }\n  .cc-carousel__track { display: flex; transition: transform .45s ease; }\n  .cc-carousel__item { flex: 0 0 calc(100% / var(--cc-per-view, 3)); box-sizing: border-box; min-width: 0; padding: 0 10px; }\n  .cc-carousel__media { display: block; margin-bottom: 15px; }\n  .cc-carousel__img, .cc-carousel__media .cc-event__ph {\n    display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; margin: 0; background: var(--cc-ph-bg);\n  }\n  .cc-carousel__date { margin: 0 0 10px; font-size: 13px; line-height: 1.4; letter-spacing: .015em; }\n  .cc-carousel__title { margin: 0 0 10px; font-size: 20px; line-height: 1.2; font-weight: 600; letter-spacing: .01em; text-transform: uppercase; }\n  .cc-carousel__title a, .cc-carousel__more { color: inherit !important; text-decoration: none !important; }\n  .cc-carousel__title a:hover, .cc-carousel__more:hover { text-decoration: underline !important; text-underline-offset: 3px; }\n  .cc-carousel__excerpt {\n    margin: 0 0 10px; font-size: 14px; line-height: 1.45;\n    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;\n  }\n  .cc-carousel__more { display: inline-block; font-size: 14px; line-height: 20px; }\n  @media (prefers-reduced-motion: reduce) { .cc-carousel__track { transition: none; } }\n  .cc-events__all {\n    display: table; margin: 28px auto 0; padding: 10px 22px; border: 1px solid var(--cc-accent);\n    border-radius: var(--cc-btn-radius); color: inherit !important; text-decoration: none !important;\n  }\n  .cc-events__stale {\n    margin: 0 0 20px; padding: 12px 16px; border: 1px solid var(--cc-border);\n    border-radius: var(--cc-radius); font-size: .9rem; color: var(--cc-muted);\n  }\n  .cc-events__stale a { color: inherit; }\n  .cc-events--past .cc-event { opacity: .85; }\n  .cc-cal { margin-top: 12px; font-size: .85rem; }\n  .cc-cal summary {\n    display: inline-block; cursor: pointer; list-style: none; color: var(--cc-muted);\n    text-decoration: underline; text-underline-offset: 3px;\n  }\n  .cc-cal summary::-webkit-details-marker { display: none; }\n  .cc-cal__links { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: 8px; }\n  .cc-cal__links a { color: inherit !important; }\n  .cc-events__subscribe { margin: 28px auto 0; text-align: center; }\n  .cc-events__subscribe .cc-cal__links { justify-content: center; }";
+    style.textContent = "  .cc-events {\n    /* BRAND: change these to match the site */\n    --cc-accent: #474D47;          /* button + active tab color */\n    --cc-accent-text: #FCF2BF;\n    --cc-muted: rgba(71, 77, 71, .8);\n    --cc-border: rgba(190, 173, 147, .7);\n    --cc-card-bg: transparent;\n    --cc-radius: 0px;          /* card corners */\n    --cc-btn-radius: 300px;       /* button corners */\n    --cc-font: aktiv-grotesk-condensed, \"Archivo Narrow\", \"Arial Narrow\", sans-serif;         /* e.g. the site's body font, with fallbacks */\n    --cc-ph-bg: rgba(190, 173, 147, .35);  /* editorial style: block for events without a photo */\n    --cc-tag-bg: #FFFFFF;          /* editorial style: date tag on the photo */\n    --cc-tag-text: #474D47;\n    --cc-heading-font: span-semiboldcomp, aktiv-grotesk-condensed, \"Archivo Narrow\", serif; /* carousel heading */\n    font-family: var(--cc-font);\n    color: inherit;\n    max-width: 1100px;\n    margin: 0 auto;\n  }\n  .cc-events__tabs { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }\n  .cc-events__tab {\n    font: inherit; font-size: .9rem; letter-spacing: .04em; text-transform: uppercase;\n    padding: 10px 18px; border: 1px solid var(--cc-border); border-radius: 999px;\n    background: transparent; color: inherit; cursor: pointer;\n  }\n  .cc-events__tab.is-active { background: var(--cc-accent); color: var(--cc-accent-text); border-color: var(--cc-accent); }\n  .cc-events__list { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }\n  .cc-event {\n    display: flex; flex-direction: column; border: 1px solid var(--cc-border);\n    border-radius: var(--cc-radius); overflow: hidden; background: var(--cc-card-bg);\n  }\n  .cc-event__img { aspect-ratio: 16 / 9; width: 100%; object-fit: cover; display: block; background: var(--cc-border); }\n  .cc-event__body { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 8px; flex: 1; }\n  .cc-event__date { font-size: .85rem; letter-spacing: .05em; text-transform: uppercase; color: var(--cc-muted); margin: 0; }\n  .cc-event__title { font-size: 1.25rem; line-height: 1.25; margin: 0; }\n  .cc-event__meta, .cc-event__summary { margin: 0; font-size: .95rem; color: var(--cc-muted); overflow-wrap: anywhere; }\n  .cc-event__badge {\n    align-self: flex-start; font-size: .7rem; letter-spacing: .08em; text-transform: uppercase;\n    padding: 3px 8px; border-radius: 4px; background: var(--cc-accent); color: var(--cc-accent-text);\n  }\n  .cc-event__actions { margin-top: auto; padding-top: 10px; display: flex; gap: 10px; flex-wrap: wrap; }\n  .cc-event__btn {\n    display: inline-block; padding: 10px 16px; border-radius: var(--cc-btn-radius); font-size: .9rem;\n    text-decoration: none !important; border: 1px solid var(--cc-accent);\n  }\n  .cc-event__btn--primary { background: var(--cc-accent); color: var(--cc-accent-text) !important; }\n  .cc-event__btn--ghost { background: transparent; color: inherit !important; }\n  .cc-events__msg { grid-column: 1 / -1; color: var(--cc-muted); }\n  .cc-events__more {\n    display: block; margin: 28px auto 0; font: inherit; padding: 10px 22px; cursor: pointer;\n    border: 1px solid var(--cc-border); border-radius: 999px; background: transparent; color: inherit;\n  }\n  .cc-events__more[hidden], .cc-events__stale[hidden], .cc-events__tabs[hidden] { display: none; }\n\n  /* EDITORIAL style (STYLE: \"editorial\"): a blog-style grid. Photo, small date,\n     bold uppercase title, one line of text, underlined text links, no boxes. */\n  .cc-events--editorial .cc-events__list { gap: 48px 60px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }\n  .cc-events--editorial .cc-event { border: 0; border-radius: 0; background: transparent; overflow: visible; }\n  .cc-event__media { position: relative; display: block; margin-bottom: 20px; text-decoration: none !important; }\n  .cc-events--editorial .cc-event__img, .cc-event__ph {\n    display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; margin: 0; background: var(--cc-ph-bg);\n  }\n  .cc-event__tag {\n    position: absolute; top: 12px; right: 12px; min-width: 58px; padding: 8px 10px 7px; text-align: center;\n    background: var(--cc-tag-bg); color: var(--cc-tag-text); line-height: 1;\n  }\n  .cc-event__tag-month { display: block; font-size: .85rem; text-transform: uppercase; }\n  .cc-event__tag-day { display: block; font-size: 1.75rem; margin-top: 3px; }\n  .cc-events--editorial .cc-event__title a { color: inherit !important; text-decoration: none !important; }\n  .cc-events--editorial .cc-event__title a:hover { text-decoration: underline !important; text-underline-offset: 4px; }\n  .cc-events--editorial .cc-event__body { padding: 0; gap: 10px; }\n  .cc-events--editorial .cc-event__date { font-size: .95rem; letter-spacing: 0; text-transform: none; color: var(--cc-muted); margin: -4px 0 0; }\n  .cc-events--editorial .cc-event__meta { font-size: .85rem; }\n  .cc-events--editorial .cc-event__title { font-size: 1.4rem; font-weight: 700; line-height: 1.15; text-transform: uppercase; letter-spacing: 0; }\n  .cc-events--editorial .cc-event__actions { padding-top: 4px; gap: 20px; }\n  .cc-events--editorial .cc-event__btn {\n    padding: 0; border: 0; border-radius: 0; background: none !important; color: inherit !important;\n    font-size: 1rem; text-decoration: underline !important; text-underline-offset: 3px;\n  }\n  .cc-events--editorial .cc-event__btn--primary { font-weight: 700; }\n  .cc-events--editorial .cc-events__tabs { gap: 28px; margin-bottom: 32px; }\n  .cc-events--editorial .cc-events__tab {\n    border: 0; border-radius: 0; padding: 4px 0; background: none; color: var(--cc-muted); font-size: 1rem;\n  }\n  .cc-events--editorial .cc-events__tab.is-active {\n    background: none; color: inherit; font-weight: 700; text-decoration: underline; text-underline-offset: 6px;\n  }\n  .cc-events--editorial .cc-events__more, .cc-events--editorial .cc-events__all {\n    border: 0; border-radius: 0; padding: 6px 0; text-decoration: underline !important; text-underline-offset: 3px;\n  }\n  .cc-events--editorial .cc-event__badge { border-radius: 0; }\n\n  /* CAROUSEL layout (LAYOUT: \"carousel\"): Squarespace's summary carousel. A row of\n     cards with arrows that move a page at a time; swipe on phones. */\n  .cc-carousel__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 18px; }\n  .cc-carousel__heading {\n    margin: 0; font-family: var(--cc-heading-font); font-size: 1.6rem; line-height: 1.1; text-transform: uppercase;\n  }\n  .cc-carousel__pager { display: flex; gap: 10px; margin-left: auto; }\n  .cc-carousel__arrow {\n    display: flex; align-items: center; justify-content: center; width: 26px; height: 26px; padding: 0;\n    border: 0; background: none; color: inherit; cursor: pointer;\n  }\n  .cc-carousel__arrow::before {\n    content: \"\"; width: 9px; height: 9px; border-left: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor;\n    transform: translateX(2px) rotate(45deg);\n  }\n  .cc-carousel__arrow--next::before { transform: translateX(-2px) rotate(-135deg); }\n  .cc-carousel__arrow:disabled { opacity: .3; cursor: default; }\n  .cc-carousel__viewport { display: block; overflow: hidden; margin: 0 -10px; }\n  .cc-carousel__track { display: flex; transition: transform .45s ease; }\n  .cc-carousel__item { flex: 0 0 calc(100% / var(--cc-per-view, 3)); box-sizing: border-box; min-width: 0; padding: 0 10px; }\n  .cc-carousel__media { display: block; margin-bottom: 15px; }\n  .cc-carousel__img, .cc-carousel__media .cc-event__ph {\n    display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; margin: 0; background: var(--cc-ph-bg);\n  }\n  .cc-carousel__date { margin: 0 0 10px; font-size: 13px; line-height: 1.4; letter-spacing: .015em; }\n  .cc-carousel__title { margin: 0 0 10px; font-size: 20px; line-height: 1.2; font-weight: 600; letter-spacing: .01em; text-transform: uppercase; }\n  .cc-carousel__title a, .cc-carousel__more { color: inherit !important; text-decoration: none !important; }\n  .cc-carousel__title a:hover, .cc-carousel__more:hover { text-decoration: underline !important; text-underline-offset: 3px; }\n  .cc-carousel__excerpt {\n    margin: 0 0 10px; font-size: 14px; line-height: 1.45;\n    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;\n  }\n  .cc-carousel__more { display: inline-block; font-size: 14px; line-height: 20px; }\n  @media (prefers-reduced-motion: reduce) { .cc-carousel__track { transition: none; } }\n  .cc-events__all {\n    display: table; margin: 28px auto 0; padding: 10px 22px; border: 1px solid var(--cc-accent);\n    border-radius: var(--cc-btn-radius); color: inherit !important; text-decoration: none !important;\n  }\n  .cc-events__stale {\n    margin: 0 0 20px; padding: 12px 16px; border: 1px solid var(--cc-border);\n    border-radius: var(--cc-radius); font-size: .9rem; color: var(--cc-muted);\n  }\n  .cc-events__stale a { color: inherit; }\n  .cc-events--past .cc-event { opacity: .85; }\n  .cc-cal { margin-top: 12px; font-size: .85rem; }\n  .cc-cal summary {\n    display: inline-block; cursor: pointer; list-style: none; color: var(--cc-muted);\n    text-decoration: underline; text-underline-offset: 3px;\n  }\n  .cc-cal summary::-webkit-details-marker { display: none; }\n  .cc-cal__links { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: 8px; }\n  .cc-cal__links a { color: inherit !important; }\n  .cc-events__subscribe { margin: 28px auto 0; text-align: center; }\n  .cc-events__subscribe .cc-cal__links { justify-content: center; }\n\n  /* PILL buttons (PILL_BUTTONS: true): the date, a Details pill and an Add to\n     calendar pill share one line under the title, wrapping on narrow cards. */\n  .cc-event__line { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }\n  .cc-events--editorial .cc-event__line .cc-event__date, .cc-event__line .cc-carousel__date { margin: 0; }\n  .cc-event__pills { display: flex; align-items: center; gap: 8px; }\n  .cc-pill {\n    display: inline-flex; align-items: center; box-sizing: border-box; margin: 0; padding: 7px 15px;\n    border: 1px solid var(--cc-accent); border-radius: var(--cc-btn-radius); font: inherit; font-size: 14px;\n    line-height: 1.15; letter-spacing: .02em; white-space: nowrap; cursor: pointer; text-decoration: none !important;\n  }\n  .cc-pill--solid { background: var(--cc-accent); color: var(--cc-accent-text) !important; }\n  .cc-pill--outline { background: transparent; color: inherit !important; }\n  .cc-pill:hover { opacity: .85; }\n  .cc-event__line .cc-cal { position: relative; margin: 0; font-size: inherit; }\n  .cc-event__line .cc-cal summary.cc-pill { display: inline-flex; color: inherit; text-decoration: none; }\n  .cc-event__line .cc-cal__links {\n    position: absolute; z-index: 20; top: calc(100% + 6px); right: 0; min-width: 100%; margin: 0;\n    flex-direction: column; flex-wrap: nowrap; gap: 0; padding: 6px 0; background: #fff; color: #222;\n    border: 1px solid var(--cc-border); box-shadow: 0 6px 18px rgba(0,0,0,.12); font-size: 14px;\n  }\n  .cc-carousel__item .cc-event__line .cc-cal__links { top: auto; bottom: calc(100% + 6px); }\n  .cc-event__line .cc-cal__links a { display: block; padding: 7px 14px; white-space: nowrap; text-decoration: none !important; }\n  .cc-event__line .cc-cal__links a:hover { background: rgba(0,0,0,.05); }";
     document.head.appendChild(style);
   }
   host.className = "cc-events";
@@ -45,6 +45,10 @@
     SHOW_DETAILS_WITH_REGISTER: false,  // false = events with a registration show only Register
     ADD_TO_CALENDAR: true,       // "Add to calendar" on upcoming events (Google, Apple / Outlook)
     SUBSCRIBE_LINK: true,        // full layout: "Subscribe to this calendar" under the list
+    PILL_BUTTONS: true,         // editorial + carousel: Details and Add to calendar pills on the date line
+    SHOW_DESCRIPTION: false,      // false = no description or excerpt on cards
+    SHOW_LOCATION: false,         // false = no location / "Weekly" line on cards
+    OPEN_IN: "window",              // "window" = event pages open in a separate window on computers (new tab on phones)
     STALE_AFTER_HOURS: 36,       // the sync runs hourly; older than this means it stopped
     CHURCH_CENTER_URL: "https://radiantcentralcoast.churchcenter.com/calendar"        // e.g. "https://yourchurch.churchcenter.com/calendar", linked in the stale note
   };
@@ -168,23 +172,46 @@
     if (text) n.textContent = text;
     return n;
   }
-  function link(href, label, cls, modal) {
-    var a = el("a", "cc-event__btn " + cls, label);
+  // Every link to Church Center goes through here: the modal, a new tab, or (OPEN_IN
+  // "window") a new tab that the click handler below turns into a separate window.
+  function setLink(a, href) {
     a.href = href;
-    if (modal) a.setAttribute("data-open-in-church-center-modal", "true");
-    else { a.target = "_blank"; a.rel = "noopener"; }
+    if (CONFIG.USE_CHURCH_CENTER_MODAL) { a.setAttribute("data-open-in-church-center-modal", "true"); return; }
+    a.target = "_blank"; a.rel = "noopener";
+    if (CONFIG.OPEN_IN === "window") a.setAttribute("data-cc-window", "");
+  }
+  function link(href, label, cls) {
+    var a = el("a", "cc-event__btn " + cls, label);
+    setLink(a, href);
     return a;
+  }
+  // Date, Details pill and Add to calendar pill on one line. The two pills stay
+  // together and drop under the date as a pair when the card is too narrow.
+  function pillLine(e, view, target, dateEl) {
+    var line = el("div", "cc-event__line");
+    var pills = el("div", "cc-event__pills");
+    line.appendChild(dateEl);
+    if (target) {
+      var d = el("a", "cc-pill cc-pill--solid", T.details);
+      setLink(d, target);
+      pills.appendChild(d);
+    }
+    if (view === "upcoming" && CONFIG.ADD_TO_CALENDAR) pills.appendChild(eventCal(e, "cc-pill cc-pill--outline"));
+    if (pills.childNodes.length) line.appendChild(pills);
+    return line;
+  }
+  function eventCal(e, summaryCls) {
+    return calMenu(T.addToCalendar, [
+      [T.google, googleLink(e), true],
+      [T.appleOutlook, e.ics ? feedFile(e.ics) : "", false]
+    ], "cc-cal", summaryCls);
   }
   // Editorial style: Squarespace's own event card. Photo (or a colour block) with a
   // date tag in the corner, bold title, then the full date. Photo and title open the event.
   function editorialTop(e, view) {
     var media = el("a", "cc-event__media");
     var target = (view === "upcoming" && e.registration_url) || e.details_url || e.registration_url;
-    if (target) {
-      media.href = target;
-      if (CONFIG.USE_CHURCH_CENTER_MODAL) media.setAttribute("data-open-in-church-center-modal", "true");
-      else { media.target = "_blank"; media.rel = "noopener"; }
-    }
+    if (target) setLink(media, target);
     media.setAttribute("aria-hidden", "true");
     media.tabIndex = -1;
     var block = el("div", "cc-event__ph");
@@ -202,6 +229,10 @@
     media.appendChild(tag);
     return { media: media, target: target };
   }
+  function metaLine(e) {
+    if (!CONFIG.SHOW_LOCATION) return "";
+    return [e.location, CONFIG.COLLAPSE_RECURRING ? e.recurrence : ""].filter(Boolean).join(" · ");
+  }
   function editorialDate(e) {
     var day = fmt(e.start, { month: "long", day: "numeric", year: "numeric" });
     return e.all_day ? day : day + " · " + fmt(e.start, { hour: "numeric", minute: "2-digit" });
@@ -216,16 +247,20 @@
       var h = el("h3", "cc-event__title");
       if (top.target) {
         var a = el("a", "", e.title);
-        a.href = top.target;
-        if (CONFIG.USE_CHURCH_CENTER_MODAL) a.setAttribute("data-open-in-church-center-modal", "true");
-        else { a.target = "_blank"; a.rel = "noopener"; }
+        setLink(a, top.target);
         h.appendChild(a);
       } else {
         h.textContent = e.title;
       }
       b.appendChild(h);
-      b.appendChild(el("p", "cc-event__date", editorialDate(e)));
-      var where = [e.location, CONFIG.COLLAPSE_RECURRING ? e.recurrence : ""].filter(Boolean).join(" · ");
+      var when = el("p", "cc-event__date", editorialDate(e));
+      if (CONFIG.PILL_BUTTONS) {
+        b.appendChild(pillLine(e, view, top.target, when));
+        c.appendChild(b);
+        return c;
+      }
+      b.appendChild(when);
+      var where = metaLine(e);
       if (where) b.appendChild(el("p", "cc-event__meta", where));
     } else {
       if (e.image) {
@@ -237,30 +272,24 @@
       if (e.featured && view === "upcoming") b.appendChild(el("span", "cc-event__badge", T.featured));
       b.appendChild(el("p", "cc-event__date", dateLine(e)));
       b.appendChild(el("h3", "cc-event__title", e.title));
-      var meta = [e.location, CONFIG.COLLAPSE_RECURRING ? e.recurrence : ""].filter(Boolean).join(" · ");
+      var meta = metaLine(e);
       if (meta) b.appendChild(el("p", "cc-event__meta", meta));
-      var blurb = e.summary || (e.description || "").split("\n")[0];
+      var blurb = CONFIG.SHOW_DESCRIPTION && (e.summary || (e.description || "").split("\n")[0]);
       if (blurb) b.appendChild(el("p", "cc-event__summary", blurb.length > 220 ? blurb.slice(0, 217) + "…" : blurb));
     }
 
     var actions = el("div", "cc-event__actions");
-    var modal = CONFIG.USE_CHURCH_CENTER_MODAL;
     if (view === "upcoming" && e.registration_url) {
-      actions.appendChild(link(e.registration_url, T.register, "cc-event__btn--primary", modal));
+      actions.appendChild(link(e.registration_url, T.register, "cc-event__btn--primary"));
     }
     var registerOnly = view === "upcoming" && e.registration_url && !CONFIG.SHOW_DETAILS_WITH_REGISTER;
     if (e.details_url && !registerOnly && !editorial) {
       var primary = !actions.childNodes.length && view === "upcoming";
       actions.appendChild(link(e.details_url, T.details,
-        primary ? "cc-event__btn--primary" : "cc-event__btn--ghost", modal));
+        primary ? "cc-event__btn--primary" : "cc-event__btn--ghost"));
     }
     if (actions.childNodes.length) b.appendChild(actions);
-    if (view === "upcoming" && CONFIG.ADD_TO_CALENDAR) {
-      b.appendChild(calMenu(T.addToCalendar, [
-        [T.google, googleLink(e), true],
-        [T.appleOutlook, e.ics ? feedFile(e.ics) : "", false]
-      ], "cc-cal"));
-    }
+    if (view === "upcoming" && CONFIG.ADD_TO_CALENDAR) b.appendChild(eventCal(e));
     c.appendChild(b);
     return c;
   }
@@ -287,9 +316,9 @@
     }).toString();
   }
   // A small disclosure menu: no extra script, works with keyboard and screen readers.
-  function calMenu(label, links, cls) {
+  function calMenu(label, links, cls, summaryCls) {
     var menu = el("details", cls);
-    menu.appendChild(el("summary", "", label));
+    menu.appendChild(el("summary", summaryCls || "", label));
     var box = el("div", "cc-cal__links");
     links.forEach(function (l) {
       if (!l[1]) return;
@@ -303,11 +332,6 @@
   }
 
   // ── Carousel layout ─────────────────────────────────────────
-  function setLink(a, href) {
-    a.href = href;
-    if (CONFIG.USE_CHURCH_CENTER_MODAL) a.setAttribute("data-open-in-church-center-modal", "true");
-    else { a.target = "_blank"; a.rel = "noopener"; }
-  }
   function carouselCard(e) {
     var item = el("article", "cc-carousel__item");
     var target = e.registration_url || e.details_url;
@@ -325,12 +349,18 @@
       media.appendChild(block);
     }
     item.appendChild(media);
-    item.appendChild(el("p", "cc-carousel__date", editorialDate(e)));
+    var when = el("p", "cc-carousel__date", editorialDate(e));
     var title = el("h3", "cc-carousel__title");
     if (target) { var a = el("a", "", e.title); setLink(a, target); title.appendChild(a); }
     else title.textContent = e.title;
+    if (CONFIG.PILL_BUTTONS) {
+      item.appendChild(title);
+      item.appendChild(pillLine(e, "upcoming", target, when));
+      return item;
+    }
+    item.appendChild(when);
     item.appendChild(title);
-    var blurb = e.summary || (e.description || "").split("\n")[0];
+    var blurb = CONFIG.SHOW_DESCRIPTION && (e.summary || (e.description || "").split("\n")[0]);
     if (blurb) item.appendChild(el("p", "cc-carousel__excerpt", blurb));
     if (target) {
       var more = el("a", "cc-carousel__more", e.registration_url ? T.registerArrow : T.readMore);
@@ -448,6 +478,24 @@
     });
   });
   moreBtn.addEventListener("click", function () { render(false); });
+
+  // OPEN_IN "window": a centred window on computers. Phones, modifier clicks and
+  // blocked pop-ups fall through to the link's own new tab.
+  root.addEventListener("click", function (ev) {
+    var a = ev.target.closest && ev.target.closest("a[data-cc-window]");
+    if (!a || ev.ctrlKey || ev.metaKey || ev.shiftKey || ev.altKey || ev.button || window.innerWidth < 700) return;
+    var w = Math.min(560, screen.availWidth - 40), h = Math.min(820, screen.availHeight - 60);
+    var left = Math.round((screen.availLeft || 0) + (screen.availWidth - w) / 2);
+    var top = Math.round((screen.availTop || 0) + (screen.availHeight - h) / 2);
+    var win = window.open(a.href, "churchcenter", "popup=yes,width=" + w + ",height=" + h + ",left=" + left + ",top=" + top);
+    if (win) { ev.preventDefault(); try { win.opener = null; } catch (err) {} win.focus(); }
+  });
+  // Calendar menus close on a choice, on a click elsewhere, and when another opens.
+  document.addEventListener("click", function (ev) {
+    Array.prototype.forEach.call(root.querySelectorAll(".cc-event__line details[open]"), function (d) {
+      if (!d.contains(ev.target) || ev.target.closest(".cc-cal__links a")) d.open = false;
+    });
+  });
 
   fetch(CONFIG.FEED_URL, { cache: "no-cache" })
     .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
