@@ -65,6 +65,10 @@ jobs:
           python3 pco_events_sync.py --output-dir public --days-back 730 --days-ahead 365
           --previous "https://legacyco.github.io/radiant-events/events.json"
 
+      # The Squarespace embeds load these scripts; the preview page shows all of them with live data.
+      - name: Add embeds and preview page
+        run: cp -r embeds preview.html public/
+
       - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v3
