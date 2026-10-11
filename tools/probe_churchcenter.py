@@ -1,13 +1,12 @@
-"""One-off diagnostic: which Church Center calendar endpoints exist for Radiant,
-and what fields they return. Prints public data only (never the visitor token)."""
+"""One-off diagnostic: Church Center calendar shape for Radiant (location, paging,
+filters). Prints public data only (never the visitor token)."""
 import json
-import re
 import urllib.error
 import urllib.request
 
 SUB = "radiantcentralcoast"
 ORIGIN = f"https://{SUB}.churchcenter.com"
-API = "https://api.churchcenter.com"
+API = "https://api.churchcenter.com/calendar/v2"
 UA = "legacy-church-events-sync/1.0 (probe)"
 
 
@@ -15,54 +14,55 @@ def req(url, headers=None, data=None):
     r = urllib.request.Request(url, data=data, headers={"User-Agent": UA, **(headers or {})})
     try:
         with urllib.request.urlopen(r, timeout=30) as resp:
-            return resp.status, resp.headers.get("content-type", ""), resp.read()
+            return resp.status, resp.read()
     except urllib.error.HTTPError as e:
-        return e.code, e.headers.get("content-type", ""), e.read()
-    except Exception as e:
-        return None, "", str(e).encode()
+        return e.code, e.read()
 
 
 tok = json.loads(req(f"{ORIGIN}/sessions/tokens", {"Origin": ORIGIN, "Accept": "application/json",
-                                                    "Content-Type": "application/json"}, b"{}")[2])
+                                                    "Content-Type": "application/json"}, b"{}")[1])
 AUTH = {"Authorization": f"Bearer {tok['data']['attributes']['token']}", "Origin": ORIGIN, "Accept": "application/json"}
 
 
-def show(label, url, headers=AUTH, n=1500):
-    status, ctype, body = req(url, headers)
-    print(f"\n=== {label}\n{url}\n-> {status} {ctype}")
-    if n:
-        print(body[:n].decode(errors="replace"))
-    return status, body
+def get(path):
+    status, body = req(f"{API}{path}", AUTH)
+    try:
+        return status, json.loads(body)
+    except ValueError:
+        return status, {"raw": body[:300].decode(errors="replace")}
 
 
-print("##### API roots")
-for u in (f"{API}/calendar/v2", f"{API}/registrations/v2", f"{API}/"):
-    show("root", u, n=3000)
+def summary(label, path):
+    status, d = get(path)
+    print(f"\n=== {label}: {path} -> {status}")
+    if status != 200:
+        print(json.dumps(d)[:400])
+        return d
+    data = d.get("data") or []
+    first = data[0] if isinstance(data, list) and data else data
+    print("count on page:", len(data) if isinstance(data, list) else 1, "| links:", d.get("links"))
+    print("meta:", json.dumps(d.get("meta"))[:1500])
+    if first:
+        print("attribute keys:", sorted((first.get("attributes") or {}).keys()))
+        print("relationships:", json.dumps(first.get("relationships"))[:800])
+        print("first:", first.get("id"), (first.get("attributes") or {}).get("name"),
+              (first.get("attributes") or {}).get("starts_at"))
+    inc = d.get("included") or []
+    print("included types:", sorted({i.get("type") for i in inc}))
+    for t in sorted({i.get("type") for i in inc}):
+        one = next(i for i in inc if i.get("type") == t)
+        print(f"  {t} sample:", json.dumps(one)[:700])
+    return d
 
-print("\n##### Candidate calendar endpoints")
-for path in ("events", "events?filter=upcoming", "events?include=event_times", "event_times",
-             "event_instances?filter=future", "calendar_events", "events_with_instances"):
-    show(path, f"{API}/calendar/v2/{path}", n=2500)
 
-print("\n##### Registrations sample (field names, images)")
-show("registrations", f"{API}/registrations/v2/events?per_page=2", n=5000)
-
-print("\n##### What the Church Center calendar page calls")
-status, html = show("calendar page", f"{ORIGIN}/calendar", headers={"Accept": "text/html"}, n=0)
-text = html.decode(errors="replace")
-print("api paths in page:", sorted(set(re.findall(r"[a-z_]+/v2/[a-z_/]+", text)))[:60])
-scripts = re.findall(r'<script[^>]+src="([^"]+)"', text)
-print("scripts:", scripts[:30])
-found = set()
-for src in scripts:
-    src = "https:" + src if src.startswith("//") else (ORIGIN + src if src.startswith("/") else src)
-    s, _, js = req(src)
-    if s == 200:
-        found |= set(re.findall(rb"calendar/v2/[a-z_]+(?:/[a-z_]+)?", js))
-        found |= set(re.findall(rb"/calendar/[a-z_]+\.json", js))
-print("calendar endpoints in JS:", sorted(x.decode() for x in found))
-
-print("\n##### Calendar feed candidates")
-for u in (f"{ORIGIN}/calendar.ics", f"{ORIGIN}/calendar/feed.ics", f"{ORIGIN}/calendar?format=ics",
-          f"{ORIGIN}/calendar.json"):
-    show("feed?", u, headers={"Accept": "*/*"}, n=300)
+summary("upcoming", "/events?filter=upcoming")
+for inc in ("location", "locations", "event_times", "location,event_times", "event_group", "tags", "resource"):
+    summary(f"include {inc}", f"/events?filter=upcoming&include={inc}")
+summary("per_page", "/events?filter=upcoming&per_page=100")
+summary("where gte", "/events?where[starts_at][gte]=2026-10-01T00:00:00Z&order=starts_at")
+summary("past", "/events?filter=past")
+summary("order desc", "/events?order=-starts_at")
+d = summary("one event", "/events/200190659")
+summary("one event + includes", "/events/200190659?include=location,event_times")
+summary("event_times of one", "/events/200190659/event_times")
+summary("location of one", "/events/200190659/location")
