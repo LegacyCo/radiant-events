@@ -35,7 +35,7 @@
     LAYOUT: "slider",              // "compact" = next few upcoming events, no tabs; "carousel" = row with arrows
     COMPACT_COUNT: 3,
     CAROUSEL_COUNT: 9,           // carousel layout: how many upcoming events to scroll through
-    CAROUSEL_HEADING: "Coming up at Radiant",        // carousel layout: heading beside the arrows, e.g. "Upcoming events"
+    CAROUSEL_HEADING: "",        // carousel layout: heading beside the arrows, e.g. "Upcoming events"
     SLIDER_FULL_WIDTH: true,     // slider layout: stretch edge to edge even inside a narrower section
     EVENTS_PAGE_URL: "",         // compact layout: adds a "See all events" link here, e.g. "/events"
     INCLUDE: [],                 // e.g. ["Español"]: only events with one of these in the title
