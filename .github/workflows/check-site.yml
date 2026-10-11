@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
     inputs:
       urls:
-        description: "Space-separated page URLs"
+        description: "Arguments for tools/check_site.mjs"
         default: "https://radiantcentralcoast.com/ https://radiantcentralcoast.com/events"
 
 permissions:
