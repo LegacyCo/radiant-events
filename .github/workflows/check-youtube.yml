@@ -13,3 +13,4 @@ jobs:
         with: { node-version: "22" }
       - run: npm install --no-save playwright@1.48.2 && npx playwright install --with-deps chromium
       - run: node tools/check_youtube.mjs
+      - run: node tools/check_youtube_local.mjs
