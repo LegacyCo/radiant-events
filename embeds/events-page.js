@@ -39,7 +39,7 @@
     SLIDER_FULL_WIDTH: true,     // slider layout: stretch edge to edge even inside a narrower section
     EVENTS_PAGE_URL: "",         // compact layout: adds a "See all events" link here, e.g. "/events"
     INCLUDE: [],                 // e.g. ["Español"]: only events with one of these in the title
-    EXCLUDE: [],                 // e.g. ["Staff"]: hide events with one of these in the title
+    EXCLUDE: ["Español"],                 // e.g. ["Staff"]: hide events with one of these in the title
     LOCALE: "en-US",             // date language, e.g. "es-US"
     TEXT: {"upcoming": "Upcoming", "past": "Past events", "loading": "Loading events…", "more": "Show more", "register": "Register", "details": "Details", "featured": "Featured", "seeAll": "See all events", "noUpcoming": "No upcoming events right now. Check back soon.", "noPast": "No past events yet.", "error": "Events couldn't load right now. Please refresh in a minute.", "stale": "This list may be out of date. ", "staleLink": "See the latest events on Church Center.", "addToCalendar": "Add to calendar", "google": "Google Calendar", "appleOutlook": "Apple / Outlook", "subscribe": "Subscribe to this calendar", "readMore": "Read more →", "registerArrow": "Register →", "prev": "Previous", "next": "Next"},
     ADD_SEO_SCHEMA: true,        // adds schema.org Event data for upcoming events
