@@ -20,7 +20,7 @@ const candidates = [];
 for (const u of [site + "/", ...links]) {
   try {
     const html = await (await fetch(u)).text();
-    if (html.includes("cpIframe")) candidates.push({ u, version: html.includes("LIVE_WINDOWS") ? "new (quota-safe)" : html.includes("POLL_MS") ? "old (10 s polling)" : "unknown" });
+    if (html.includes("cpIframe")) candidates.push({ u, version: html.includes("LIVE_WINDOWS") ? "new (quota-safe), banner " + ((html.match(/SHOW_BANNER\s*=\s*(\w+)/) || [])[1]) : html.includes("POLL_MS") ? "old (10 s polling)" : "unknown" });
   } catch {}
 }
 console.log("pages with the switcher:", JSON.stringify(candidates));
@@ -33,7 +33,8 @@ for (const c of candidates) {
   p.on("console", (m) => { if (m.type() === "error" || m.type() === "warning") errs.push(m.type() + ": " + m.text().slice(0, 200)); });
   p.on("response", (r) => { if (r.url().includes("googleapis.com/youtube")) api.push(r.status() + " " + r.url().split("?")[0].split("/").pop()); });
   await p.goto(c.u, { waitUntil: "networkidle" }).catch((e) => errs.push("goto: " + e.message));
-  await p.waitForTimeout(10000);
+  await p.locator('#cpWrap').scrollIntoViewIfNeeded().catch(() => {});
+  await p.waitForTimeout(12000);
   const st = await p.evaluate(() => {
     const f = document.getElementById("cpIframe"), ph = document.getElementById("cpPlaceholder"), b = document.getElementById("cpBtn");
     const blocks = document.querySelectorAll("#cpWrap").length;
