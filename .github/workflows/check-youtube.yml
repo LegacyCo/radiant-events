@@ -1,0 +1,15 @@
+# Diagnostic: find the YouTube stream switcher on radiantcentralcoast.com and report what it does. Safe to delete.
+name: Check YouTube player
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "22" }
+      - run: npm install --no-save playwright@1.48.2 && npx playwright install --with-deps chromium
+      - run: node tools/check_youtube.mjs
